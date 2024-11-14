@@ -34,7 +34,7 @@ export function HabitCard({ habit }: HabitCardProps) {
   };
 
   return (
-    <div className="rounded-lg border bg-card p-4 shadow-sm">
+    <div className="rounded-lg border bg-card p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <div className="mb-4 flex items-start justify-between">
         <div className="flex-1">
           {isEditing ? (
@@ -48,15 +48,15 @@ export function HabitCard({ habit }: HabitCardProps) {
               <Input
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                className="h-7"
+                className="h-7 dark:border-gray-600 dark:bg-gray-700"
                 autoFocus
                 onBlur={handleRename}
               />
             </form>
           ) : (
             <>
-              <h3 className="font-semibold">{habit.name}</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold dark:text-gray-100">{habit.name}</h3>
+              <p className="text-sm text-muted-foreground dark:text-gray-400">
                 {stats?.weeklyCompletions || 0}/{habit.targetFrequency}x this week
               </p>
             </>
@@ -70,7 +70,7 @@ export function HabitCard({ habit }: HabitCardProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 text-destructive"
+            className="h-8 w-8 text-destructive dark:text-red-500"
             onClick={() => {
               if (confirm('Are you sure you want to delete this habit?')) {
                 deleteHabit({ habitId: habit._id });
@@ -92,7 +92,7 @@ export function HabitCard({ habit }: HabitCardProps) {
       {/* Progress bar */}
       {stats && (
         <div className="mb-4">
-          <div className="h-2 w-full rounded-full bg-muted">
+          <div className="h-2 w-full rounded-full bg-muted dark:bg-gray-700">
             <div
               className="h-full rounded-full bg-primary transition-all"
               style={{ width: `${stats.weeklyProgress * 100}%` }}
@@ -102,18 +102,18 @@ export function HabitCard({ habit }: HabitCardProps) {
       )}
 
       {stats && (
-        <div className="grid grid-cols-3 gap-2 border-t pt-4 text-center text-sm">
+        <div className="grid grid-cols-3 gap-2 border-t pt-4 text-center text-sm dark:border-gray-700">
           <div>
-            <div className="font-semibold">{stats.currentStreak}</div>
-            <div className="text-xs text-muted-foreground">Current Streak</div>
+            <div className="font-semibold dark:text-gray-100">{stats.currentStreak}</div>
+            <div className="text-xs text-muted-foreground dark:text-gray-400">Current Streak</div>
           </div>
           <div>
-            <div className="font-semibold">{stats.longestStreak}</div>
-            <div className="text-xs text-muted-foreground">Longest Streak</div>
+            <div className="font-semibold dark:text-gray-100">{stats.longestStreak}</div>
+            <div className="text-xs text-muted-foreground dark:text-gray-400">Longest Streak</div>
           </div>
           <div>
-            <div className="font-semibold">{stats.totalCompletions}</div>
-            <div className="text-xs text-muted-foreground">Total</div>
+            <div className="font-semibold dark:text-gray-100">{stats.totalCompletions}</div>
+            <div className="text-xs text-muted-foreground dark:text-gray-400">Total</div>
           </div>
         </div>
       )}

@@ -4,7 +4,7 @@ import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Card } from '@/components/ui/card';
 import { SignedIn } from '@clerk/nextjs';
-import { format, startOfWeek, endOfWeek } from 'date-fns';
+import { format, endOfWeek } from 'date-fns';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Loader2 } from 'lucide-react';
 

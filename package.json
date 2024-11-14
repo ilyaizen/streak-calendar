@@ -12,10 +12,13 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.15.3",
     "@clerk/nextjs": "^6.3.2",
+    "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "convex": "^1.17.0",
+    "date-fns": "^4.1.0",
     "lucide-react": "^0.456.0",
     "next": "14.2.16",
     "react": "^18",

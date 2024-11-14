@@ -59,3 +59,5 @@ The user should be able to:
 │ └── middleware.ts
 ├── tailwind.config.ts
 └── tsconfig.json
+
+Use kamel-case for file naming.

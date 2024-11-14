@@ -1,6 +1,6 @@
 # Project Overview
 
-Build _Seinfeld Calendar_, a simple habit-tracking tool based on the "Don't Break the Chain" method. Each day you complete a task, mark an X to create an unbroken chain of progress. The growing streak gamifies consistency and keeps you motivated.
+Build _Streak Calendar_, a simple habit-tracking tool based on the "Don't Break the Chain" method. Each day you complete a task, mark an X to create an unbroken chain of progress. The growing streak gamifies consistency and keeps you motivated.
 
 Tech Stack: Next.js, Tailwind CSS, Shadcn UI, Convex DB, Clerk Auth
 

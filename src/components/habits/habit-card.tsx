@@ -7,6 +7,7 @@ import { Id } from '../../../convex/_generated/dataModel';
 import { Button } from '../ui/button';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import { useToast } from '@/hooks/use-toast';
 
 type HabitCardProps = {
   habit: {
@@ -24,6 +25,7 @@ export function HabitCard({ habit }: HabitCardProps) {
   const deleteHabit = useMutation(api.habits.deleteHabit);
   const renameHabit = useMutation(api.habits.renameHabit);
   const stats = useQuery(api.habits.getHabitStats, { habitId: habit._id });
+  const { toast } = useToast();
 
   const handleRename = async () => {
     if (newName.trim() === '') return;
@@ -72,6 +74,10 @@ export function HabitCard({ habit }: HabitCardProps) {
             onClick={() => {
               if (confirm('Are you sure you want to delete this habit?')) {
                 deleteHabit({ habitId: habit._id });
+                toast({
+                  title: 'Habit deleted',
+                  description: `${habit.name} has been removed from your habits`,
+                });
               }
             }}
           >

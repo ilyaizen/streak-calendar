@@ -6,8 +6,8 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'Habit Tracker',
-  description: 'Track your habits',
+  title: 'Streak Calendar',
+  description: 'Streak Calendar - Track your habits',
 };
 
 export default function RootLayout({

@@ -9,8 +9,8 @@ export default function Home() {
     <div className="grid min-h-screen gap-16 p-8 pb-20 sm:p-20">
       <main className="space-y-16">
         <SignedIn>
-          <HabitList />
           <CalendarView />
+          <HabitList />
         </SignedIn>
         <SignedOut>
           <div className="text-center">

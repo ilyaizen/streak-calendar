@@ -1,5 +1,6 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
+import { ThemeToggle } from './theme-toggle';
 
 export function Header() {
   return (
@@ -10,15 +11,16 @@ export function Header() {
             Streak Calendar
           </Link>
           <nav className="hidden items-center gap-4 sm:flex">
-            <Link href="/dashboard" className="text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
               Dashboard
             </Link>
-            <Link href="/stats" className="text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/stats" className="text-sm text-muted-foreground hover:text-foreground">
               Stats
             </Link>
           </nav>
         </div>
-        <div>
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
           <SignedOut>
             <SignInButton />
           </SignedOut>

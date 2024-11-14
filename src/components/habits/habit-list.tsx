@@ -15,6 +15,11 @@ export function HabitList() {
 
   return (
     <div className="space-y-8">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {habits.map((habit) => (
+          <HabitCard key={habit._id} habit={habit} />
+        ))}
+      </div>
       <Dialog>
         <DialogTrigger asChild>
           <Button>
@@ -29,11 +34,6 @@ export function HabitList() {
           <NewHabitForm />
         </DialogContent>
       </Dialog>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {habits.map((habit) => (
-          <HabitCard key={habit._id} habit={habit} />
-        ))}
-      </div>
     </div>
   );
 }

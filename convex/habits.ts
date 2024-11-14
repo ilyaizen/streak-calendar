@@ -1,5 +1,6 @@
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
+import { startOfWeek, endOfWeek, subWeeks } from 'date-fns';
 
 export const create = mutation({
   args: {
@@ -189,5 +190,107 @@ export const renameHabit = mutation({
     }
 
     await ctx.db.patch(args.habitId, { name: args.name });
+  },
+});
+
+export const getDashboardStats = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Not authenticated');
+
+    const habits = await ctx.db
+      .query('habits')
+      .filter((q) => q.eq(q.field('userId'), identity.subject))
+      .collect();
+
+    const completions = await ctx.db
+      .query('completions')
+      .filter((q) => q.eq(q.field('userId'), identity.subject))
+      .collect();
+
+    // Calculate weekly completions (last 7 days)
+    const weekStart = startOfWeek(new Date()).getTime();
+    const weeklyCompletions = completions.filter((c) => c.completedAt >= weekStart).length;
+
+    // Calculate completion rate
+    const totalPossibleCompletions = habits.reduce((acc, habit) => acc + habit.targetFrequency, 0);
+    const completionRate = totalPossibleCompletions > 0 ? weeklyCompletions / totalPossibleCompletions : 0;
+
+    // Find best streak across all habits
+    const bestStreak = Math.max(
+      ...habits.map((habit) => {
+        const habitCompletions = completions
+          .filter((c) => c.habitId === habit._id)
+          .map((c) => new Date(c.completedAt).setHours(0, 0, 0, 0))
+          .sort((a, b) => a - b);
+
+        let maxStreak = 0;
+        let currentStreak = 1;
+
+        for (let i = 1; i < habitCompletions.length; i++) {
+          if (habitCompletions[i] - habitCompletions[i - 1] === 86400000) {
+            currentStreak++;
+          } else {
+            maxStreak = Math.max(maxStreak, currentStreak);
+            currentStreak = 1;
+          }
+        }
+        return Math.max(maxStreak, currentStreak);
+      }),
+      0
+    );
+
+    // Generate weekly trend data (last 8 weeks)
+    const weeklyTrend = Array.from({ length: 8 }, (_, i) => {
+      const weekStart = startOfWeek(subWeeks(new Date(), i)).getTime();
+      const weekEnd = endOfWeek(subWeeks(new Date(), i)).getTime();
+
+      return {
+        week: weekStart,
+        completions: completions.filter((c) => c.completedAt >= weekStart && c.completedAt <= weekEnd).length,
+      };
+    }).reverse();
+
+    // Calculate per-habit statistics
+    const habitStats = await Promise.all(
+      habits.map(async (habit) => {
+        const habitCompletions = completions.filter((c) => c.habitId === habit._id);
+        const weeklyTarget = habit.targetFrequency;
+        const actualCompletions = habitCompletions.filter((c) => c.completedAt >= weekStart).length;
+        const completionRate = weeklyTarget > 0 ? actualCompletions / weeklyTarget : 0;
+
+        // Calculate current streak
+        const sortedDates = habitCompletions
+          .map((c) => new Date(c.completedAt).setHours(0, 0, 0, 0))
+          .sort((a, b) => b - a);
+
+        let currentStreak = 0;
+        const today = new Date().setHours(0, 0, 0, 0);
+        const yesterday = today - 86400000;
+
+        for (let i = 0; i < sortedDates.length; i++) {
+          const date = sortedDates[i];
+          if (i === 0 && date !== today && date !== yesterday) break;
+          if (i > 0 && sortedDates[i - 1] - date > 86400000) break;
+          currentStreak++;
+        }
+
+        return {
+          id: habit._id,
+          name: habit.name,
+          targetFrequency: habit.targetFrequency,
+          currentStreak,
+          completionRate,
+        };
+      })
+    );
+
+    return {
+      weeklyCompletions,
+      completionRate,
+      bestStreak,
+      weeklyTrend,
+      habitStats,
+    };
   },
 });

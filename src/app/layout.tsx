@@ -7,7 +7,15 @@ import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'Streak Calendar',
-  description: 'Streak Calendar - Track your habits',
+  description: 'Track your habits and improve your life',
+  keywords: ['habit tracking', 'streak calendar', 'productivity'],
+  openGraph: {
+    title: 'Streak Calendar',
+    description: 'Track your habits and improve your life',
+    images: ['/og-image.png'],
+    type: 'website',
+  },
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({

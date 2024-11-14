@@ -16,14 +16,16 @@ export function Header() {
           </Link>
         </div>
 
-        <nav className="hidden items-center gap-4 sm:flex">
-          <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
-            Dashboard
-          </Link>
-          <Link href="/stats" className="text-sm text-muted-foreground hover:text-foreground">
-            Stats
-          </Link>
-        </nav>
+        <SignedIn>
+          <nav className="hidden items-center gap-4 sm:flex">
+            <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
+              Dashboard
+            </Link>
+            <Link href="/stats" className="text-sm text-muted-foreground hover:text-foreground">
+              Stats
+            </Link>
+          </nav>
+        </SignedIn>
 
         <div className="flex items-center gap-4">
           <ThemeToggle />

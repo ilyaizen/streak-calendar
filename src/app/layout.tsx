@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <Providers>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main className="mx-auto max-w-7xl flex-1">{children}</main>
           <Toaster />
           <Footer />
         </Providers>

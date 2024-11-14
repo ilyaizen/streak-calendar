@@ -31,7 +31,7 @@ export default function TermsPage() {
         <h2>5. Limitations</h2>
         <p>
           In no event shall Streak Calendar be liable for any damages arising out of the use or inability to use our
-          services. We provide the service "as is" without warranties of any kind.
+          services. We provide the service &quot;as is&quot; without warranties of any kind.
         </p>
 
         <h2>6. Contact</h2>

@@ -5,9 +5,9 @@ export default function AboutPage() {
 
       <section className="space-y-4">
         <p className="text-lg text-muted-foreground">
-          Streak Calendar is a simple yet powerful habit tracking tool based on the "Don't Break the Chain" method
-          popularized by Jerry Seinfeld. The concept is simple: mark an X for each day you complete a habit, creating an
-          unbroken chain that motivates you to maintain your streak.
+          Streak Calendar is a simple yet powerful habit tracking tool based on the &quot;Don&apos;t Break the
+          Chain&quot; method popularized by Jerry Seinfeld. The concept is simple: mark an X for each day you complete a
+          habit, creating an unbroken chain that motivates you to maintain your streak.
         </p>
 
         <p className="text-lg text-muted-foreground">

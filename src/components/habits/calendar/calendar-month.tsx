@@ -44,7 +44,6 @@ export function CalendarMonth({ date, completions }: CalendarMonthProps) {
         {days.map((day) => {
           const dayCompletions = completions.filter((completion) => isSameDay(completion.completedAt, day));
           const hasCompletion = dayCompletions.length > 0;
-          const completionPercentage = habits ? dayCompletions.length / habits.length : 0;
 
           // Get appropriate background color based on completion percentage
           const getBgColor = () => {

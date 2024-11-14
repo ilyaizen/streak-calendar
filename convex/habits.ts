@@ -46,7 +46,10 @@ export const list = query({
  * Verifies habit ownership before recording completion.
  */
 export const markComplete = mutation({
-  args: { habitId: v.id('habits') },
+  args: {
+    habitId: v.id('habits'),
+    completedAt: v.optional(v.number()),
+  },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Not authenticated');
@@ -60,7 +63,7 @@ export const markComplete = mutation({
     return await ctx.db.insert('completions', {
       habitId: args.habitId,
       userId: identity.subject,
-      completedAt: Date.now(),
+      completedAt: args.completedAt || Date.now(),
     });
   },
 });
@@ -461,5 +464,22 @@ export const getDetailedStats = query({
       averageDailyCompletions,
       habitStats,
     };
+  },
+});
+
+// Add new mutation to delete a completion
+export const deleteCompletion = mutation({
+  args: { completionId: v.id('completions') },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Not authenticated');
+
+    // Verify completion belongs to user
+    const completion = await ctx.db.get(args.completionId);
+    if (!completion || completion.userId !== identity.subject) {
+      throw new Error('Completion not found');
+    }
+
+    await ctx.db.delete(args.completionId);
   },
 });

@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import animate from 'tailwindcss-animate';
 
 const config: Config = {
   darkMode: ['class'],
@@ -50,6 +51,23 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        emerald: {
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
+        },
+        habit: {
+          0: '#e5e7eb', // gray for no completions
+          20: '#dcfce7', // very light green
+          40: '#86efac', // light green
+          60: '#4ade80', // medium green
+          80: '#22c55e', // bright green
+          100: '#16a34a', // deep green
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -58,6 +76,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [animate],
 };
 export default config;

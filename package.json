@@ -13,6 +13,7 @@
     "@clerk/clerk-react": "^5.15.3",
     "@clerk/nextjs": "^6.3.2",
     "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",
     "class-variance-authority": "^0.7.0",

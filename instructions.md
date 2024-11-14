@@ -17,7 +17,6 @@ The user should be able to:
 
 - [Clerk Auth](https://clerk.com/docs)
 - [Convex DB](https://www.convex.dev/docs)
-- [Shadcn UI](https://ui.shadcn.com/docs)
 
 # File Structure
 

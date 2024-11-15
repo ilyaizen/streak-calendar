@@ -1,7 +1,12 @@
 {
   "name": "streak-calendar",
-  "version": "0.1.0",
-  "private": true,
+  "author": "Ilya Aizenberg",
+  "description": "Track your habits and improve your life",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "https://github.com/ilyaizen/streak-calendar",
+  "homepage": "https://streakcalendar.com",
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -60,11 +60,13 @@ export const markComplete = mutation({
       throw new Error('Habit not found');
     }
 
-    return await ctx.db.insert('completions', {
+    const completionId = await ctx.db.insert('completions', {
       habitId: args.habitId,
       userId: identity.subject,
       completedAt: args.completedAt || Date.now(),
     });
+
+    return completionId;
   },
 });
 
@@ -481,5 +483,28 @@ export const deleteCompletion = mutation({
     }
 
     await ctx.db.delete(args.completionId);
+  },
+});
+
+// Add new mutation
+export const updateTargetFrequency = mutation({
+  args: {
+    habitId: v.id('habits'),
+    targetFrequency: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Not authenticated');
+
+    const habit = await ctx.db.get(args.habitId);
+    if (!habit || habit.userId !== identity.subject) {
+      throw new Error('Habit not found');
+    }
+
+    if (args.targetFrequency < 1 || args.targetFrequency > 7) {
+      throw new Error('Target frequency must be between 1 and 7');
+    }
+
+    await ctx.db.patch(args.habitId, { targetFrequency: args.targetFrequency });
   },
 });

@@ -1,21 +1,15 @@
 'use client';
 
-import { useQuery } from 'convex/react';
-import { api } from '../../../../convex/_generated/api';
 import { CalendarMonth } from './calendar-month';
-import { startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import { subMonths } from 'date-fns';
+import { Doc } from '../../../../convex/_generated/dataModel';
 
-export function CalendarView() {
+interface CalendarViewProps {
+  completions: Doc<'completions'>[];
+}
+
+export function CalendarView({ completions }: CalendarViewProps) {
   const today = new Date();
-  const startDate = startOfMonth(subMonths(today, 2)).getTime();
-  const endDate = endOfMonth(today).getTime();
-
-  const completions = useQuery(api.habits.getCompletions, {
-    startDate,
-    endDate,
-  });
-
-  if (!completions) return <div>Loading...</div>;
 
   return (
     <div className="space-y-8">

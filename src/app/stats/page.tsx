@@ -4,7 +4,7 @@ import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Card } from '@/components/ui/card';
 import { SignedIn } from '@clerk/nextjs';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Loader2 } from 'lucide-react';
 
 export default function StatsPage() {
@@ -25,16 +25,6 @@ export default function StatsPage() {
     name: dayNames[index],
     completions: count,
   }));
-
-  // Calculate time of day distribution
-  const timeDistribution = [
-    { name: 'Morning (6-12)', value: stats.timeDistribution.morning },
-    { name: 'Afternoon (12-17)', value: stats.timeDistribution.afternoon },
-    { name: 'Evening (17-22)', value: stats.timeDistribution.evening },
-    { name: 'Night (22-6)', value: stats.timeDistribution.night },
-  ];
-
-  const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))'];
 
   return (
     <SignedIn>
@@ -76,32 +66,6 @@ export default function StatsPage() {
           </div>
         </Card>
 
-        {/* Time of Day Distribution */}
-        <Card className="p-6">
-          <h2 className="mb-4 text-lg font-semibold">Time of Day Distribution</h2>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={timeDistribution}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {timeDistribution.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </Card>
-
         {/* Habit Performance Table */}
         <Card>
           <div className="p-6">
@@ -112,7 +76,6 @@ export default function StatsPage() {
                   <tr className="border-b text-sm text-muted-foreground">
                     <th className="pb-3 text-left font-medium">Habit</th>
                     <th className="pb-3 text-right font-medium">Success Rate</th>
-                    <th className="pb-3 text-right font-medium">Best Time</th>
                     <th className="pb-3 text-right font-medium">Best Day</th>
                   </tr>
                 </thead>
@@ -121,7 +84,6 @@ export default function StatsPage() {
                     <tr key={habit.id} className="border-b last:border-0">
                       <td className="py-3">{habit.name}</td>
                       <td className="py-3 text-right">{Math.round(habit.successRate * 100)}%</td>
-                      <td className="py-3 text-right">{habit.bestTimeOfDay}</td>
                       <td className="py-3 text-right">{dayNames[habit.bestDay].slice(0, 3)}</td>
                     </tr>
                   ))}

@@ -20,7 +20,7 @@ export function CalendarView() {
   return (
     <div className="space-y-8">
       <h2 className="text-2xl font-semibold">Your Streak Calendar</h2>
-      <div className="grid gap-8 md:grid-cols-3">
+      <div className="grid min-h-[400px] gap-8 md:grid-cols-3">
         {[2, 1, 0].map((monthsAgo) => (
           <CalendarMonth key={monthsAgo} date={subMonths(today, monthsAgo)} completions={completions} />
         ))}

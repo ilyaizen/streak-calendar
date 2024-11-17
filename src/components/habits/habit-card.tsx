@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Trash2, Undo2 } from 'lucide-react';
+import { Trash2, Undo2, Pencil } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Id } from '../../../convex/_generated/dataModel';
 import { Button } from '../ui/button';
@@ -76,16 +76,30 @@ export function HabitCard({ habit }: HabitCardProps) {
       <div className="rounded-lg border bg-card p-4 shadow-sm">
         <div className="mb-4 flex items-start justify-between">
           <div className="flex-1">
-            <h3
-              className="cursor-pointer font-semibold"
-              onDoubleClick={() => {
-                setNewName(habit.name);
-                setNewTarget(habit.targetFrequency.toString());
-                setShowEditDialog(true);
-              }}
-            >
-              {habit.name}
-            </h3>
+            <div className="group relative flex items-center gap-2">
+              <h3
+                className="cursor-pointer font-semibold"
+                onDoubleClick={() => {
+                  setNewName(habit.name);
+                  setNewTarget(habit.targetFrequency.toString());
+                  setShowEditDialog(true);
+                }}
+              >
+                {habit.name}
+              </h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
+                onClick={() => {
+                  setNewName(habit.name);
+                  setNewTarget(habit.targetFrequency.toString());
+                  setShowEditDialog(true);
+                }}
+              >
+                <Pencil className="h-3 w-3" />
+              </Button>
+            </div>
             <p className="text-sm text-muted-foreground">
               {stats?.weeklyCompletions || 0}/{habit.targetFrequency}x this week
             </p>

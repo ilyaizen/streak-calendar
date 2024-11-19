@@ -1,50 +1,64 @@
 'use client';
 
 import { SignedIn, SignedOut } from '@clerk/nextjs';
-import { HabitList } from '@/components/habits/habit-list';
-import { CalendarView } from '@/components/habits/calendar/calendar-view';
-import { useQuery } from 'convex/react';
-import { api } from '../../convex/_generated/api';
-import { Loader2 } from 'lucide-react';
-import { startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { CalendarCheck, LineChart, Target } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="grid min-h-screen gap-16 p-8 pb-20 sm:p-20">
-      <main className="space-y-16">
-        <SignedIn>
-          <HomeContent />
-        </SignedIn>
-        <SignedOut>
-          <div className="text-center">
-            <p className="mb-4 text-lg">Sign in to start tracking your habits</p>
-          </div>
-        </SignedOut>
-      </main>
-    </div>
-  );
-}
-
-function HomeContent() {
-  const habits = useQuery(api.habits.list);
-  const today = new Date();
-  const completions = useQuery(api.habits.getCompletions, {
-    startDate: startOfMonth(subMonths(today, 2)).getTime(),
-    endDate: endOfMonth(today).getTime(),
-  });
-
-  if (!habits || !completions) {
-    return (
-      <div className="flex h-[50vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Hero Section */}
+      <div className="py-20 text-center">
+        <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+          Track Your Habits,
+          <br />
+          Build Better Routines
+        </h1>
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+          Simple, visual habit tracking that helps you build consistency and achieve your goals. Don't break the chain
+          and watch your streaks grow.
+        </p>
+        <div className="mt-10">
+          <SignedOut>
+            <Button size="lg" asChild>
+              <Link href="/sign-up">Get Started Free</Link>
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <Button size="lg" asChild>
+              <Link href="/calendar">Go to Calendar</Link>
+            </Button>
+          </SignedIn>
+        </div>
       </div>
-    );
-  }
 
-  return (
-    <>
-      <CalendarView completions={completions} />
-      <HabitList habits={habits} />
-    </>
+      {/* Features Section */}
+      <div className="py-20">
+        <div className="grid gap-12 sm:grid-cols-3">
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
+              <CalendarCheck className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <h3 className="mb-2 text-lg font-semibold">Visual Calendar</h3>
+            <p className="text-muted-foreground">Track your progress with a simple, visual calendar interface</p>
+          </div>
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
+              <Target className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <h3 className="mb-2 text-lg font-semibold">Weekly Goals</h3>
+            <p className="text-muted-foreground">Set and track weekly frequency targets for each habit</p>
+          </div>
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
+              <LineChart className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <h3 className="mb-2 text-lg font-semibold">Detailed Stats</h3>
+            <p className="text-muted-foreground">Get insights into your habits with detailed statistics</p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

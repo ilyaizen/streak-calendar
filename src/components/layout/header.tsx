@@ -18,6 +18,9 @@ export function Header() {
 
         <SignedIn>
           <nav className="hidden items-center gap-4 sm:flex">
+            <Link href="/calendar" className="text-sm text-muted-foreground hover:text-foreground">
+              Calendar
+            </Link>
             <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
               Dashboard
             </Link>

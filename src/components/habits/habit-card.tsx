@@ -9,6 +9,7 @@ import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import { ConfettiButton } from '../ui/confetti';
 
 type HabitCardProps = {
   habit: {
@@ -153,9 +154,22 @@ export function HabitCard({ habit }: HabitCardProps) {
               Undo
             </Button>
           )}
-          <Button onClick={handleComplete} size="sm">
+          <ConfettiButton
+            onClick={async (e) => {
+              e.preventDefault();
+              await handleComplete();
+            }}
+            options={{
+              get angle() {
+                return Math.random() * 360;
+              },
+              spread: 90,
+              particleCount: 100,
+            }}
+            className="transition-all duration-200 hover:scale-105 active:scale-95"
+          >
             Complete
-          </Button>
+          </ConfettiButton>
         </div>
       </div>
 

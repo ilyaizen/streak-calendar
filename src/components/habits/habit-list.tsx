@@ -9,6 +9,7 @@ import { Id } from '../../../convex/_generated/dataModel';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface HabitListProps {
   calendarId: Id<'calendars'>;
@@ -16,6 +17,7 @@ interface HabitListProps {
 
 export function HabitList({ calendarId }: HabitListProps) {
   const habits = useQuery(api.habits.list, { calendarId });
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!habits) {
     return (
@@ -32,7 +34,7 @@ export function HabitList({ calendarId }: HabitListProps) {
           <HabitCard key={habit._id} habit={habit} />
         ))}
       </div>
-      <Dialog>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
           <Button>
             <Plus />
@@ -43,7 +45,7 @@ export function HabitList({ calendarId }: HabitListProps) {
           <DialogHeader>
             <DialogTitle>Add New Habit</DialogTitle>
           </DialogHeader>
-          <NewHabitForm calendarId={calendarId} />
+          <NewHabitForm calendarId={calendarId} onSuccess={() => setDialogOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>

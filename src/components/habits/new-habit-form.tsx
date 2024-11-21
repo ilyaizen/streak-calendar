@@ -11,9 +11,10 @@ import { Id } from '../../../convex/_generated/dataModel';
 
 interface NewHabitFormProps {
   calendarId: Id<'calendars'>;
+  onSuccess: () => void;
 }
 
-export function NewHabitForm({ calendarId }: NewHabitFormProps) {
+export function NewHabitForm({ calendarId, onSuccess }: NewHabitFormProps) {
   const [name, setName] = useState('');
   const [targetFrequency, setTargetFrequency] = useState('3');
   const createHabit = useMutation(api.habits.create);
@@ -21,17 +22,26 @@ export function NewHabitForm({ calendarId }: NewHabitFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createHabit({
-      name,
-      targetFrequency: parseInt(targetFrequency),
-      calendarId,
-    });
-    setName('');
-    setTargetFrequency('3');
-    toast({
-      title: 'Habit created',
-      description: `${name} has been added to your habits`,
-    });
+    try {
+      await createHabit({
+        name,
+        targetFrequency: parseInt(targetFrequency),
+        calendarId,
+      });
+      setName('');
+      setTargetFrequency('3');
+      toast({
+        title: 'Habit created',
+        description: `${name} has been added to your habits`,
+      });
+      onSuccess();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to create habit',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -67,11 +77,9 @@ export function NewHabitForm({ calendarId }: NewHabitFormProps) {
         <DialogClose asChild>
           <Button variant="outline">Cancel</Button>
         </DialogClose>
-        <DialogClose asChild>
-          <Button type="submit" disabled={!name}>
-            Add Habit
-          </Button>
-        </DialogClose>
+        <Button type="submit" disabled={!name}>
+          Add Habit
+        </Button>
       </div>
     </form>
   );

@@ -1,30 +1,78 @@
 'use client';
 
+import { SignedIn } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import { Card } from '@/components/ui/card';
-import { SignedIn } from '@clerk/nextjs';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Loader2 } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Doc } from '../../../convex/_generated/dataModel';
+
+interface HabitStats {
+  id: string;
+  name: string;
+  successRate: number;
+  bestTimeOfDay: string;
+}
+
+interface DetailedStats {
+  habitStats: HabitStats[];
+  averageDailyCompletions: number;
+  mostProductiveDay: number;
+  perfectDays: number;
+  currentStreak: number;
+}
+
+// Create a separate component for calendar stats
+function CalendarStats({ calendar, stats }: { calendar: Doc<'calendars'>; stats: DetailedStats }) {
+  const calendarHabits = useQuery(api.habits.list, { calendarId: calendar._id });
+
+  if (!calendarHabits) {
+    return (
+      <Card className="p-6">
+        <div className="flex h-20 items-center justify-center">
+          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+        </div>
+      </Card>
+    );
+  }
+
+  const habitStats = stats.habitStats.filter((stat: HabitStats) =>
+    calendarHabits.some((habit) => habit._id === stat.id)
+  );
+
+  return (
+    <Card className="p-6">
+      <h3 className="mb-4 text-lg font-semibold">{calendar.name}</h3>
+      <div className="space-y-4">
+        <div className="flex justify-between">
+          <span className="text-muted-foreground">Total Habits</span>
+          <span className="font-medium">{calendarHabits.length}</span>
+        </div>
+        {habitStats.map((stat: HabitStats) => (
+          <div key={stat.id} className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>{stat.name}</span>
+              <span className="text-muted-foreground">{Math.round(stat.successRate * 100)}% success</span>
+            </div>
+            <div className="text-xs text-muted-foreground">Best time: {stat.bestTimeOfDay}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
 
 export default function StatsPage() {
-  const habits = useQuery(api.habits.list);
+  const calendars = useQuery(api.calendars.list);
   const stats = useQuery(api.habits.getDetailedStats);
 
-  if (!habits || !stats) {
+  if (!calendars || !stats) {
     return (
       <div className="flex h-[50vh] items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
-
-  // Calculate completion distribution by day of week
-  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const dayDistribution = stats.dayDistribution.map((count, index) => ({
-    name: dayNames[index],
-    completions: count,
-  }));
 
   return (
     <SignedIn>
@@ -39,7 +87,9 @@ export default function StatsPage() {
           </Card>
           <Card className="p-4">
             <h3 className="text-sm font-medium text-muted-foreground">Most Productive Day</h3>
-            <p className="mt-2 text-3xl font-bold">{dayNames[stats.mostProductiveDay]}</p>
+            <p className="mt-2 text-3xl font-bold">
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][stats.mostProductiveDay]}
+            </p>
           </Card>
           <Card className="p-4">
             <h3 className="text-sm font-medium text-muted-foreground">Perfect Days</h3>
@@ -51,47 +101,12 @@ export default function StatsPage() {
           </Card>
         </div>
 
-        {/* Day of Week Distribution */}
-        <Card className="p-6">
-          <h2 className="mb-4 text-lg font-semibold">Completions by Day of Week</h2>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dayDistribution}>
-                <XAxis dataKey="name" tickFormatter={(value) => value.slice(0, 3)} />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="completions" fill="hsl(var(--primary))" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </Card>
-
-        {/* Habit Performance Table */}
-        <Card>
-          <div className="p-6">
-            <h2 className="mb-4 text-lg font-semibold">Individual Habit Stats</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b text-sm text-muted-foreground">
-                    <th className="pb-3 text-left font-medium">Habit</th>
-                    <th className="pb-3 text-right font-medium">Success Rate</th>
-                    <th className="pb-3 text-right font-medium">Best Day</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stats.habitStats.map((habit) => (
-                    <tr key={habit.id} className="border-b last:border-0">
-                      <td className="py-3">{habit.name}</td>
-                      <td className="py-3 text-right">{Math.round(habit.successRate * 100)}%</td>
-                      <td className="py-3 text-right">{dayNames[habit.bestDay].slice(0, 3)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </Card>
+        {/* Per Calendar Stats */}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {calendars.map((calendar) => (
+            <CalendarStats key={calendar._id} calendar={calendar} stats={stats} />
+          ))}
+        </div>
       </div>
     </SignedIn>
   );

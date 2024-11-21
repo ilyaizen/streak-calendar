@@ -5,9 +5,37 @@ import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Loader2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { Doc } from '../../../convex/_generated/dataModel';
+
+// Create a separate component for calendar stats
+function CalendarStats({ calendar }: { calendar: Doc<'calendars'> }) {
+  const calendarHabits = useQuery(api.habits.list, { calendarId: calendar._id });
+
+  if (!calendarHabits) {
+    return (
+      <Card className="p-6">
+        <div className="flex h-20 items-center justify-center">
+          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="p-6">
+      <h3 className="mb-4 text-lg font-semibold">{calendar.name}</h3>
+      <div className="space-y-2">
+        <div className="flex justify-between">
+          <span className="text-muted-foreground">Total Habits</span>
+          <span className="font-medium">{calendarHabits.length}</span>
+        </div>
+        {/* Add more calendar-specific stats here */}
+      </div>
+    </Card>
+  );
+}
 
 export default function DashboardPage() {
-  // Get all calendars first
   const calendars = useQuery(api.calendars.list);
   const stats = useQuery(api.habits.getDashboardStats);
 
@@ -46,23 +74,9 @@ export default function DashboardPage() {
 
         {/* Per Calendar Stats */}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {calendars.map((calendar) => {
-            const calendarHabits = useQuery(api.habits.list, { calendarId: calendar._id });
-            if (!calendarHabits) return null;
-
-            return (
-              <Card key={calendar._id} className="p-6">
-                <h3 className="mb-4 text-lg font-semibold">{calendar.name}</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Total Habits</span>
-                    <span className="font-medium">{calendarHabits.length}</span>
-                  </div>
-                  {/* Add more calendar-specific stats here */}
-                </div>
-              </Card>
-            );
-          })}
+          {calendars.map((calendar) => (
+            <CalendarStats key={calendar._id} calendar={calendar} />
+          ))}
         </div>
       </div>
     </SignedIn>

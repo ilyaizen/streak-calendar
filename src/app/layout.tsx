@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://streakcalendar.com'),
   title: 'Streak Calendar',
   description: 'Track your habits and improve your life',
   keywords: ['habit tracking', 'streak calendar', 'productivity'],
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
     description: 'Track your habits and improve your life',
     images: ['/og-image.png'],
     type: 'website',
+    siteName: 'Streak Calendar',
+    url: 'https://streakcalendar.com',
   },
   manifest: '/manifest.json',
 };

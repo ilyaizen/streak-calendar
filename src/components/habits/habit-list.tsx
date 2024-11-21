@@ -5,7 +5,7 @@ import { NewHabitForm } from './new-habit-form';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Plus } from 'lucide-react';
-import { Doc, Id } from '../../../convex/_generated/dataModel';
+import { Id } from '../../../convex/_generated/dataModel';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Loader2 } from 'lucide-react';

@@ -16,8 +16,8 @@ export default function Home() {
           Build Better Routines
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          Simple, visual habit tracking that helps you build consistency and achieve your goals. Don't break the chain
-          and watch your streaks grow.
+          Simple, visual habit tracking that helps you build consistency and achieve your goals. Don&apos;t break the
+          chain and watch your streaks grow.
         </p>
         <div className="mt-10">
           <SignedOut>

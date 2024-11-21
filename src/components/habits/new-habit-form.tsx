@@ -35,7 +35,7 @@ export function NewHabitForm({ calendarId, onSuccess }: NewHabitFormProps) {
         description: `${name} has been added to your habits`,
       });
       onSuccess();
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to create habit',

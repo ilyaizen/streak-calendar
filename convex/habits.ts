@@ -1,6 +1,5 @@
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
-import { startOfWeek, endOfWeek, subWeeks } from 'date-fns';
 
 /**
  * Creates a new habit for the authenticated user.

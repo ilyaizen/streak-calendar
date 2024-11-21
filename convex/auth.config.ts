@@ -1,7 +1,7 @@
 const authConfig = {
   providers: [
     {
-      domain: 'https://emerging-buzzard-59.clerk.accounts.dev/',
+      domain: process.env.CLERK_DOMAIN ?? 'https://clerk.streakcalendar.com/',
       applicationID: 'convex',
     },
   ],

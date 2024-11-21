@@ -254,7 +254,7 @@ export const getDashboardStats = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Not authenticated');
 
-    // Fetch all habits and completions for the user
+    // Get all habits across all calendars
     const habits = await ctx.db
       .query('habits')
       .filter((q) => q.eq(q.field('userId'), identity.subject))

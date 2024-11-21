@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Trash2, Undo2, Pencil } from 'lucide-react';
+import { Undo2, Settings } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Id } from '../../../convex/_generated/dataModel';
 import { Button } from '../ui/button';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useToast } from '@/hooks/use-toast';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { ConfettiButton } from '../ui/confetti';
 
 type HabitCardProps = {
@@ -20,7 +20,6 @@ type HabitCardProps = {
 };
 
 export function HabitCard({ habit }: HabitCardProps) {
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [newName, setNewName] = useState(habit.name);
   const [newTarget, setNewTarget] = useState(habit.targetFrequency.toString());
@@ -40,7 +39,7 @@ export function HabitCard({ habit }: HabitCardProps) {
       title: 'Habit deleted',
       description: `${habit.name} has been removed from your habits`,
     });
-    setShowDeleteDialog(false);
+    setShowEditDialog(false);
   };
 
   const handleSaveEdits = async () => {
@@ -98,23 +97,12 @@ export function HabitCard({ habit }: HabitCardProps) {
                   setShowEditDialog(true);
                 }}
               >
-                <Pencil className="h-3 w-3" />
+                <Settings className="h-3 w-3" />
               </Button>
             </div>
             <p className="text-sm text-muted-foreground">
               {stats?.weeklyCompletions || 0}/{habit.targetFrequency}x this week
             </p>
-          </div>
-
-          <div className="flex gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-destructive"
-              onClick={() => setShowDeleteDialog(true)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
           </div>
         </div>
 
@@ -201,29 +189,23 @@ export function HabitCard({ habit }: HabitCardProps) {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSaveEdits}>Save Changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Habit</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete &quot;{habit.name}&quot;? This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleDelete}>
-              Delete
-            </Button>
+            <div className="flex w-full items-center justify-between">
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  handleDelete();
+                  setShowEditDialog(false);
+                }}
+              >
+                Delete Habit
+              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveEdits}>Save Changes</Button>
+              </div>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>

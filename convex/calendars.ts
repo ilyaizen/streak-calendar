@@ -122,7 +122,7 @@ export const createDefaultCalendar = mutation({
 
     // Create default calendar
     return await ctx.db.insert('calendars', {
-      name: 'Work',
+      name: 'Default',
       userId: identity.subject,
       colorTheme: 'emerald',
       isDefault: true,

@@ -10,16 +10,23 @@ export const create = mutation({
   args: {
     name: v.string(),
     targetFrequency: v.number(),
+    calendarId: v.id('calendars'),
   },
   handler: async (ctx, args) => {
-    // Verify user authentication
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Not authenticated');
+
+    // Verify calendar belongs to user
+    const calendar = await ctx.db.get(args.calendarId);
+    if (!calendar || calendar.userId !== identity.subject) {
+      throw new Error('Calendar not found');
+    }
 
     return await ctx.db.insert('habits', {
       name: args.name,
       targetFrequency: args.targetFrequency,
       userId: identity.subject,
+      calendarId: args.calendarId,
       createdAt: Date.now(),
     });
   },
@@ -30,14 +37,20 @@ export const create = mutation({
  * Used for displaying the user's habit list.
  */
 export const list = query({
-  handler: async (ctx) => {
+  args: {
+    calendarId: v.optional(v.id('calendars')),
+  },
+  handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Not authenticated');
 
-    return await ctx.db
-      .query('habits')
-      .filter((q) => q.eq(q.field('userId'), identity.subject))
-      .collect();
+    let q = ctx.db.query('habits').filter((q) => q.eq(q.field('userId'), identity.subject));
+
+    if (args.calendarId) {
+      q = q.filter((q) => q.eq(q.field('calendarId'), args.calendarId));
+    }
+
+    return await q.collect();
   },
 });
 

@@ -7,8 +7,13 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { DialogClose } from '../ui/dialog';
+import { Id } from '../../../convex/_generated/dataModel';
 
-export function NewHabitForm() {
+interface NewHabitFormProps {
+  calendarId: Id<'calendars'>;
+}
+
+export function NewHabitForm({ calendarId }: NewHabitFormProps) {
   const [name, setName] = useState('');
   const [targetFrequency, setTargetFrequency] = useState('3');
   const createHabit = useMutation(api.habits.create);
@@ -19,6 +24,7 @@ export function NewHabitForm() {
     await createHabit({
       name,
       targetFrequency: parseInt(targetFrequency),
+      calendarId,
     });
     setName('');
     setTargetFrequency('3');

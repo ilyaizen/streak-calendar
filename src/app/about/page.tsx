@@ -11,13 +11,12 @@ export default function AboutPage() {
         </p>
 
         <p className="text-lg text-muted-foreground">
-          Built with modern web technologies including Next.js, Tailwind CSS, and Convex DB, Streak Calendar helps you
-          visualize your progress and stay motivated through:
+          Built with modern web technologies including Next.js, Convex, and Clerk, Streak Calendar helps you visualize
+          your progress and stay motivated through:
         </p>
 
         <ul className="ml-6 list-disc space-y-2 text-muted-foreground">
           <li>Visual calendar view of your habits</li>
-          <li>Detailed statistics and insights</li>
           <li>Weekly targets and completion tracking</li>
           <li>Streak counting and milestone tracking</li>
         </ul>
@@ -34,9 +33,19 @@ export default function AboutPage() {
         </ol>
       </section>
 
-      <section className="rounded-lg border bg-muted/50 p-6">
-        <p className="text-center text-sm text-muted-foreground">
-          Version 1.0.0 • Created by Ilya Aizenberg • {new Date().getFullYear()}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">Open Source</h2>
+        <p className="text-lg text-muted-foreground">
+          Streak Calendar is open source and available on{' '}
+          <a
+            href="https://github.com/ilyaizen/streak-calendar"
+            className="underline hover:text-foreground"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+          .
         </p>
       </section>
     </div>

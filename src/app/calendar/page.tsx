@@ -68,65 +68,6 @@ export default function CalendarPage() {
     <SignedIn>
       <div className="grid min-h-screen gap-8 p-8 pb-20 sm:p-20">
         <main className="space-y-8">
-          <div className="flex items-center gap-2">
-            <Dialog open={showNewCalendarDialog} onOpenChange={setShowNewCalendarDialog}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Calendar
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create New Calendar</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Name</label>
-                    <Input
-                      value={newCalendarName}
-                      onChange={(e) => setNewCalendarName(e.target.value)}
-                      placeholder="Work, Personal, etc."
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Color Theme</label>
-                    <Select value={newCalendarColor} onValueChange={setNewCalendarColor}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="emerald">Emerald</SelectItem>
-                        <SelectItem value="blue">Blue</SelectItem>
-                        <SelectItem value="indigo">Indigo</SelectItem>
-                        <SelectItem value="violet">Violet</SelectItem>
-                        <SelectItem value="purple">Purple</SelectItem>
-                        <SelectItem value="pink">Pink</SelectItem>
-                        <SelectItem value="rose">Rose</SelectItem>
-                        <SelectItem value="red">Red</SelectItem>
-                        <SelectItem value="orange">Orange</SelectItem>
-                        <SelectItem value="amber">Amber</SelectItem>
-                        <SelectItem value="yellow">Yellow</SelectItem>
-                        <SelectItem value="lime">Lime</SelectItem>
-                        <SelectItem value="green">Green</SelectItem>
-                        <SelectItem value="teal">Teal</SelectItem>
-                        <SelectItem value="cyan">Cyan</SelectItem>
-                        <SelectItem value="sky">Sky</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <Button variant="outline" onClick={() => setShowNewCalendarDialog(false)}>
-                      Cancel
-                    </Button>
-                    <Button onClick={handleCreateCalendar} disabled={!newCalendarName}>
-                      Create
-                    </Button>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
           <div className="space-y-12">
             {calendars.map((calendar) => (
               <div key={calendar._id} className="space-y-4">
@@ -135,6 +76,63 @@ export default function CalendarPage() {
               </div>
             ))}
           </div>
+          <Dialog open={showNewCalendarDialog} onOpenChange={setShowNewCalendarDialog}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Calendar
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create New Calendar</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Name</label>
+                  <Input
+                    value={newCalendarName}
+                    onChange={(e) => setNewCalendarName(e.target.value)}
+                    placeholder="e.g., Work, Personal, Other..."
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Color Theme</label>
+                  <Select value={newCalendarColor} onValueChange={setNewCalendarColor}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="emerald">Emerald</SelectItem>
+                      <SelectItem value="blue">Blue</SelectItem>
+                      <SelectItem value="indigo">Indigo</SelectItem>
+                      <SelectItem value="violet">Violet</SelectItem>
+                      <SelectItem value="purple">Purple</SelectItem>
+                      <SelectItem value="pink">Pink</SelectItem>
+                      <SelectItem value="rose">Rose</SelectItem>
+                      <SelectItem value="red">Red</SelectItem>
+                      <SelectItem value="orange">Orange</SelectItem>
+                      <SelectItem value="amber">Amber</SelectItem>
+                      <SelectItem value="yellow">Yellow</SelectItem>
+                      <SelectItem value="lime">Lime</SelectItem>
+                      <SelectItem value="green">Green</SelectItem>
+                      <SelectItem value="teal">Teal</SelectItem>
+                      <SelectItem value="cyan">Cyan</SelectItem>
+                      <SelectItem value="sky">Sky</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setShowNewCalendarDialog(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleCreateCalendar} disabled={!newCalendarName}>
+                    Create
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </main>
       </div>
     </SignedIn>

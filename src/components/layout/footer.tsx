@@ -15,8 +15,16 @@ export function Footer() {
             <Link href="/terms" className="hover:text-gray-900 dark:hover:text-gray-200">
               Terms
             </Link>
+            <a
+              href="https://github.com/ilyaizen/streak-calendar"
+              className="hover:text-gray-900 dark:hover:text-gray-200"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">© 2024 Streak Calendar</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">© {new Date().getFullYear()} Streak Calendar</p>
         </div>
       </div>
     </footer>

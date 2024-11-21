@@ -50,8 +50,6 @@ export default function PrivacyPage() {
           For privacy-related questions, please contact us at privacy@streakcalendar.com
         </p>
       </section>
-
-      <footer className="text-sm text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</footer>
     </div>
   );
 }

@@ -111,7 +111,7 @@ export function CalendarSelector({ selectedCalendarId, onCalendarChange }: Calen
               <Input
                 value={newCalendarName}
                 onChange={(e) => setNewCalendarName(e.target.value)}
-                placeholder="Work, Personal, etc."
+                placeholder="e.g., Work, Personal, Other..."
               />
             </div>
             <div>

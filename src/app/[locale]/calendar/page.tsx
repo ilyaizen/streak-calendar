@@ -102,7 +102,7 @@ export default function CalendarPage() {
   return (
     <SignedIn>
       <div className="grid min-h-screen gap-8 p-8">
-        <main className="space-y-4">
+        <main className="space-y-8">
           <div className="space-y-8">
             {calendars.map((calendar) => (
               <div key={calendar._id} className="space-y-8">
@@ -114,7 +114,7 @@ export default function CalendarPage() {
           <Dialog open={showNewCalendarDialog} onOpenChange={setShowNewCalendarDialog}>
             <DialogTrigger asChild>
               <Button>
-                <Plus className="mr-2 h-4 w-4" />
+                <Plus className="h-4 w-4" />
                 {t('addCalendar')}
               </Button>
             </DialogTrigger>

@@ -46,7 +46,7 @@ export function HabitList({ calendarId }: { calendarId: Id<'calendars'> }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       {habits.length > 0 ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {habits.map((habit) => (
@@ -60,7 +60,7 @@ export function HabitList({ calendarId }: { calendarId: Id<'calendars'> }) {
       <Dialog open={showNewHabitDialog} onOpenChange={setShowNewHabitDialog}>
         <DialogTrigger asChild>
           <Button>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="h-4 w-4" />
             {t('addHabit')}
           </Button>
         </DialogTrigger>

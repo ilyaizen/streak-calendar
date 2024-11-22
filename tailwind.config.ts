@@ -49,8 +49,30 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      keyframes: {
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        in: 'in 0.2s ease-out',
+        out: 'out 0.2s ease-in',
+        'fade-in': 'fade-in 0.2s ease-out',
+        'fade-out': 'fade-out 0.2s ease-in',
+        'zoom-in': 'zoom-in 0.2s ease-out',
+        'zoom-out': 'zoom-out 0.2s ease-in',
+        'slide-in-from-top': 'slide-in-from-top 0.2s ease-out',
+        'slide-out-to-top': 'slide-out-to-top 0.2s ease-in',
+      },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animate')],
 };
 export default config;

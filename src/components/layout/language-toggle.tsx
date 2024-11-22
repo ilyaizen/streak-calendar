@@ -1,7 +1,6 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
 import { useLocale } from 'next-intl';
 
 export function LanguageToggle() {
@@ -15,9 +14,16 @@ export function LanguageToggle() {
     // Split the pathname into segments
     const segments = pathname.split('/');
 
-    // The first segment after splitting will be empty (because pathname starts with /)
-    // The second segment should be the locale
-    segments[1] = newLocale;
+    // Find the locale segment index (it might be at index 1 or not present)
+    const localeIndex = segments.findIndex((segment) => ['en', 'he'].includes(segment));
+
+    if (localeIndex === -1) {
+      // No locale in path, add it after the first segment (which is empty)
+      segments.splice(1, 0, newLocale);
+    } else {
+      // Replace existing locale
+      segments[localeIndex] = newLocale;
+    }
 
     // Reconstruct the path
     const newPath = segments.join('/');
@@ -26,8 +32,8 @@ export function LanguageToggle() {
   };
 
   return (
-    <Button variant="ghost" onClick={handleLanguageChange} className="h-9 px-3">
+    <div onClick={handleLanguageChange} className="flex h-9 cursor-pointer items-center justify-center">
       {currentLocale === 'en' ? 'עברית' : 'English'}
-    </Button>
+    </div>
   );
 }

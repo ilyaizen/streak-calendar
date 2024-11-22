@@ -27,13 +27,16 @@
     "create": "Create",
     "loading": "Loading calendars...",
     "noCalendars": "No calendars found. Create one to get started!",
-    "deleteConfirm": "Are you sure you want to delete this calendar?",
     "deleteSuccess": "Calendar deleted successfully",
     "createSuccess": "Calendar created successfully",
     "updateSuccess": "Calendar updated successfully",
     "error": "An error occurred. Please try again.",
     "calendarNamePlaceholder": "e.g., Work, Personal, Other...",
-    "hasBeenCreated": "has been created"
+    "hasBeenCreated": "has been created",
+    "delete": "Delete",
+    "deleteConfirm": "Delete Confirmation",
+    "deleteCalendarConfirmText": "Are you sure you want to delete {calendarName}? All habits and their completion history will be permanently deleted. This action cannot be undone.",
+    "hasBeenDeleted": "has been deleted"
   },
   "terms": {
     "title": "Terms of Service",
@@ -109,7 +112,6 @@
     "create": "Create",
     "loading": "Loading habits...",
     "noHabits": "No habits found. Create one to get started!",
-    "deleteConfirm": "Are you sure you want to delete this habit?",
     "deleteSuccess": "Habit deleted successfully",
     "createSuccess": "Habit created successfully",
     "updateSuccess": "Habit updated successfully",
@@ -128,6 +130,10 @@
     "targetHelp": "How many times per week?",
     "hasBeenDeleted": "has been removed from your habits",
     "undoCompletion": "Completion undone",
-    "completionUndone": "Removed completion mark from {habitName}"
+    "completionUndone": "Removed completion mark from {habitName}",
+    "delete": "Delete",
+    "deleteConfirm": "Delete Confirmation",
+    "deleteHabitConfirmText": "Are you sure you want to delete {habitName}? This action cannot be undone.",
+    "daysPerWeek": "times per week"
   }
 }

@@ -20,7 +20,7 @@ export function HabitList({ calendarId }: { calendarId: Id<'calendars'> }) {
 
   const [showNewHabitDialog, setShowNewHabitDialog] = useState(false);
   const [newHabitName, setNewHabitName] = useState('');
-  const [targetFrequency, setTargetFrequency] = useState('');
+  const [targetFrequency, setTargetFrequency] = useState('3');
 
   const handleCreateHabit = async () => {
     await createHabit({
@@ -82,11 +82,12 @@ export function HabitList({ calendarId }: { calendarId: Id<'calendars'> }) {
               <Input
                 type="number"
                 min="1"
-                max="7"
+                max="30"
                 value={targetFrequency}
                 onChange={(e) => setTargetFrequency(e.target.value)}
                 placeholder={t('targetPlaceholder')}
               />
+              <p className="text-xs text-muted-foreground">{t('daysPerWeek')}</p>
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowNewHabitDialog(false)}>

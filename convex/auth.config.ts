@@ -1,4 +1,4 @@
-export default {
+const authConfig = {
   providers: [
     {
       domain: process.env.CLERK_DOMAIN ?? 'https://clerk.streakcalendar.com',
@@ -6,3 +6,5 @@ export default {
     },
   ],
 };
+
+export default authConfig;

@@ -101,11 +101,11 @@ export default function CalendarPage() {
 
   return (
     <SignedIn>
-      <div className="grid min-h-screen gap-8 p-8 pb-20 sm:p-20">
-        <main className="space-y-8">
-          <div className="space-y-12">
+      <div className="grid min-h-screen gap-8 p-8">
+        <main className="space-y-4">
+          <div className="space-y-8">
             {calendars.map((calendar) => (
-              <div key={calendar._id} className="space-y-4">
+              <div key={calendar._id} className="space-y-8">
                 <CalendarView completions={completions} calendar={calendar} />
                 <HabitList calendarId={calendar._id} />
               </div>

@@ -27,13 +27,16 @@
     "create": "צור",
     "loading": "טוען יומנים...",
     "noCalendars": "לא נמצאו יומנים. צור אחד כדי להתחיל!",
-    "deleteConfirm": "האם אתה בטוח שברצונך למחוק יומן זה?",
     "deleteSuccess": "היומן נמחק בהצלחה",
     "createSuccess": "היומן נוצר בהצלחה",
     "updateSuccess": "היומן עודכן בהצלחה",
     "error": "אירעה שגיאה. אנא נסה שוב.",
     "calendarNamePlaceholder": "לדוגמה: עבודה, אישי, אחר...",
-    "hasBeenCreated": "נוצר בהצלחה"
+    "hasBeenCreated": "נוצר בהצלחה",
+    "delete": "מחק",
+    "deleteConfirm": "אישור מחיקה",
+    "deleteCalendarConfirmText": "האם אתה בטוח שברצונך למחוק את {calendarName}? כל ההרגלים והיסטוריית ההשלמות ימחקו לצמיתות. לא ניתן לבטל פעולה זו.",
+    "hasBeenDeleted": "נמחק"
   },
   "terms": {
     "title": "תנאי שימוש",
@@ -92,7 +95,7 @@
     "about": "אודות",
     "privacy": "פרטיות",
     "terms": "תנאים",
-    "github": "גיטהאב",
+    "github": "GitHub",
     "copyright": "יומן הרגלים"
   },
   "habits": {
@@ -109,7 +112,6 @@
     "create": "צור",
     "loading": "טוען הרגלים...",
     "noHabits": "לא נמצאו הרגלים. צור אחד כדי להתחיל!",
-    "deleteConfirm": "האם אתה בטוח שברצונך למחוק הרגל זה?",
     "deleteSuccess": "ההרגל נמחק בהצלחה",
     "createSuccess": "ההרגל נוצר בהצלחה",
     "updateSuccess": "ההרגל עודכן בהצלחה",
@@ -128,6 +130,10 @@
     "targetHelp": "כמה פעמים בשבוע?",
     "hasBeenDeleted": "הוסר מההרגלים שלך",
     "undoCompletion": "ההשלמה בוטלה",
-    "completionUndone": "סימון ההשלמה הוסר מ{habitName}"
+    "completionUndone": "סימון ההשלמה הוסר מ{habitName}",
+    "delete": "מחק",
+    "deleteConfirm": "אישור מחיקה",
+    "deleteHabitConfirmText": "האם אתה בטוח שברצונך למחוק את {habitName}? לא ניתן לבטל פעולה זו.",
+    "daysPerWeek": "פעמים בשבוע"
   }
 }

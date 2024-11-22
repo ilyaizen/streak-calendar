@@ -6,7 +6,7 @@ import { Doc } from '../../../../convex/_generated/dataModel';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { Loader2, Settings } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -30,6 +30,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [newName, setNewName] = useState(calendar.name);
   const [newColorTheme, setNewColorTheme] = useState(calendar.colorTheme);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   if (!habits) {
     return (
@@ -57,8 +58,10 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     await removeCalendar({ id: calendar._id });
     toast({
       title: t('deleteSuccess'),
-      description: `${calendar.name} ${t('hasBeenCreated')}`,
+      description: `${calendar.name} ${t('hasBeenDeleted')}`,
     });
+    setShowEditDialog(false);
+    setShowDeleteDialog(false);
   };
 
   // Filter completions for this calendar's habits
@@ -118,12 +121,14 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
                 </Select>
               </div>
               <div className="flex justify-between">
-                {!calendar.isDefault && (
-                  <Button variant="destructive" onClick={handleDeleteCalendar}>
-                    {t('deleteCalendar')}
-                  </Button>
-                )}
-                <div className="ml-auto flex gap-2">
+                <div>
+                  {!calendar.isDefault && (
+                    <Button variant="destructive" onClick={() => setShowDeleteDialog(true)}>
+                      {t('deleteCalendar')}
+                    </Button>
+                  )}
+                </div>
+                <div className="flex gap-2">
                   <Button variant="outline" onClick={() => setShowEditDialog(false)}>
                     {t('cancel')}
                   </Button>
@@ -145,6 +150,24 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
           />
         ))}
       </div>
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('deleteConfirm')}</DialogTitle>
+          </DialogHeader>
+          <p className="text-muted-foreground">{t('deleteCalendarConfirmText', { calendarName: calendar.name })}</p>
+          <DialogFooter>
+            <div className="flex w-full items-center justify-end gap-2">
+              <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
+                {t('cancel')}
+              </Button>
+              <Button variant="destructive" onClick={handleDeleteCalendar}>
+                {t('delete')}
+              </Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

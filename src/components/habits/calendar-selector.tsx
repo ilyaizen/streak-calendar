@@ -105,7 +105,7 @@ export function CalendarSelector({ selectedCalendarId, onCalendarChange }: Calen
           <DialogHeader>
             <DialogTitle>Create New Calendar</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-2">
             <div>
               <label className="text-sm font-medium">Name</label>
               <Input
@@ -152,7 +152,7 @@ export function CalendarSelector({ selectedCalendarId, onCalendarChange }: Calen
             <DialogHeader>
               <DialogTitle>Edit Calendar</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div>
                 <label className="text-sm font-medium">Name</label>
                 <Input
@@ -177,12 +177,14 @@ export function CalendarSelector({ selectedCalendarId, onCalendarChange }: Calen
                 </Select>
               </div>
               <div className="flex justify-between">
-                {!selectedCalendar.isDefault && (
-                  <Button variant="destructive" onClick={handleDeleteCalendar}>
-                    Delete Calendar
-                  </Button>
-                )}
-                <div className="ml-auto flex gap-2">
+                <div>
+                  {!selectedCalendar.isDefault && (
+                    <Button variant="destructive" onClick={handleDeleteCalendar}>
+                      Delete Calendar
+                    </Button>
+                  )}
+                </div>
+                <div className="flex gap-2">
                   <Button variant="outline" onClick={() => setShowEditDialog(false)}>
                     Cancel
                   </Button>

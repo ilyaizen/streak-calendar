@@ -6,7 +6,8 @@ import { ClerkProvider, useAuth } from '@clerk/clerk-react';
 import { ThemeProvider } from 'next-themes';
 import { NextIntlClientProvider, AbstractIntlMessages } from 'next-intl';
 
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL as string);
+// Create the Convex client outside of the component
+const convexClient = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 export function Providers({
   children,
@@ -18,14 +19,40 @@ export function Providers({
   messages: AbstractIntlMessages;
 }) {
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''}>
-      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </ThemeProvider>
+    <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}
+      afterSignInUrl="/calendar"
+      afterSignUpUrl="/calendar"
+    >
+      <ConvexProviderWithClerk client={convexClient} useAuth={useAuth}>
+        <AuthenticatedApp locale={locale} messages={messages}>
+          {children}
+        </AuthenticatedApp>
       </ConvexProviderWithClerk>
     </ClerkProvider>
+  );
+}
+
+function AuthenticatedApp({
+  children,
+  locale,
+  messages,
+}: {
+  children: React.ReactNode;
+  locale: string;
+  messages: AbstractIntlMessages;
+}) {
+  const { isLoaded } = useAuth();
+
+  if (!isLoaded) {
+    return null;
+  }
+
+  return (
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        {children}
+      </NextIntlClientProvider>
+    </ThemeProvider>
   );
 }

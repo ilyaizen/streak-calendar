@@ -3,7 +3,6 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useLocale } from 'next-intl';
-import { locales } from '@/i18n/settings';
 
 export function LanguageToggle() {
   const pathname = usePathname();
@@ -11,19 +10,17 @@ export function LanguageToggle() {
   const currentLocale = useLocale();
 
   const handleLanguageChange = () => {
-    // Get the new locale (toggle between 'en' and 'he')
     const newLocale = currentLocale === 'en' ? 'he' : 'en';
 
-    // Remove the current locale from pathname if it exists
-    let newPath = pathname;
-    locales.forEach((locale) => {
-      if (newPath.startsWith(`/${locale}`)) {
-        newPath = newPath.substring(locale.length + 1) || '/';
-      }
-    });
+    // Split the pathname into segments
+    const segments = pathname.split('/');
 
-    // Add the new locale to the path
-    newPath = newPath === '/' ? `/${newLocale}` : `/${newLocale}${newPath}`;
+    // The first segment after splitting will be empty (because pathname starts with /)
+    // The second segment should be the locale
+    segments[1] = newLocale;
+
+    // Reconstruct the path
+    const newPath = segments.join('/');
 
     router.push(newPath);
   };

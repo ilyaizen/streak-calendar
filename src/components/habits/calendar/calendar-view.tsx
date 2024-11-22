@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslations } from 'next-intl';
 
 interface CalendarViewProps {
   completions: Doc<'completions'>[];
@@ -19,6 +20,7 @@ interface CalendarViewProps {
 }
 
 export function CalendarView({ completions, calendar }: CalendarViewProps) {
+  const t = useTranslations('calendar');
   const habits = useQuery(api.habits.list, { calendarId: calendar._id });
   const updateCalendar = useMutation(api.calendars.update);
   const removeCalendar = useMutation(api.calendars.remove);
@@ -45,8 +47,8 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     });
     setShowEditDialog(false);
     toast({
-      title: 'Calendar updated',
-      description: `Calendar has been updated`,
+      title: t('updateSuccess'),
+      description: `${calendar.name} ${t('hasBeenCreated')}`,
     });
   };
 
@@ -54,8 +56,8 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     if (calendar.isDefault) return;
     await removeCalendar({ id: calendar._id });
     toast({
-      title: 'Calendar deleted',
-      description: `${calendar.name} has been deleted`,
+      title: t('deleteSuccess'),
+      description: `${calendar.name} ${t('hasBeenCreated')}`,
     });
   };
 
@@ -72,7 +74,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     <div className="space-y-4">
       <div className="group relative flex items-center gap-2">
         <h2 className="cursor-pointer select-none text-2xl font-semibold" onDoubleClick={handleDoubleClick}>
-          {calendar.name} Calendar
+          {calendar.name}
         </h2>
         <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
           <DialogTrigger asChild>
@@ -82,15 +84,15 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit Calendar</DialogTitle>
+              <DialogTitle>{t('editCalendar')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Name</label>
+                <label className="text-sm font-medium">{t('calendarName')}</label>
                 <Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder={calendar.name} />
               </div>
               <div>
-                <label className="text-sm font-medium">Color Theme</label>
+                <label className="text-sm font-medium">{t('colorTheme')}</label>
                 <Select value={newColorTheme} onValueChange={setNewColorTheme}>
                   <SelectTrigger>
                     <SelectValue />
@@ -118,14 +120,14 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
               <div className="flex justify-between">
                 {!calendar.isDefault && (
                   <Button variant="destructive" onClick={handleDeleteCalendar}>
-                    Delete Calendar
+                    {t('deleteCalendar')}
                   </Button>
                 )}
                 <div className="ml-auto flex gap-2">
                   <Button variant="outline" onClick={() => setShowEditDialog(false)}>
-                    Cancel
+                    {t('cancel')}
                   </Button>
-                  <Button onClick={handleUpdateCalendar}>Save Changes</Button>
+                  <Button onClick={handleUpdateCalendar}>{t('save')}</Button>
                 </div>
               </div>
             </div>

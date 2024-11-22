@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "Streak Calendar",
+    "description": "Track your habits and improve your life"
+  },
+  "nav": {
+    "home": "Home",
+    "calendar": "Calendar",
+    "about": "About"
+  },
+  "home": {
+    "title": "Track Your Habits,\nBuild Better Routines",
+    "subtitle": "Simple, visual habit tracking that helps you build consistency and achieve your goals. Don't break the chain and watch your streaks grow.",
+    "getStarted": "Get Started Free",
+    "goToCalendar": "Go to Calendar"
+  },
+  "calendar": {
+    "title": "Your Calendars",
+    "addCalendar": "Add Calendar",
+    "createCalendar": "Create New Calendar",
+    "editCalendar": "Edit Calendar",
+    "deleteCalendar": "Delete Calendar",
+    "calendarName": "Name",
+    "colorTheme": "Color Theme",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "create": "Create",
+    "loading": "Loading calendars...",
+    "noCalendars": "No calendars found. Create one to get started!",
+    "deleteConfirm": "Are you sure you want to delete this calendar?",
+    "deleteSuccess": "Calendar deleted successfully",
+    "createSuccess": "Calendar created successfully",
+    "updateSuccess": "Calendar updated successfully",
+    "error": "An error occurred. Please try again.",
+    "calendarNamePlaceholder": "e.g., Work, Personal, Other...",
+    "hasBeenCreated": "has been created"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "acceptance": {
+      "title": "1. Acceptance of Terms",
+      "content": "By accessing and using Streak Calendar, you agree to be bound by these Terms of Service and all applicable laws and regulations."
+    },
+    "license": {
+      "title": "2. Use License",
+      "content": "Permission is granted to temporarily use Streak Calendar for personal, non-commercial purposes. This is the grant of a license, not a transfer of title."
+    },
+    "userData": {
+      "title": "3. User Data",
+      "content": "You retain all rights to your data. We collect and process data as outlined in our Privacy Policy. You are responsible for maintaining the confidentiality of your account."
+    }
+  },
+  "about": {
+    "title": "About Streak Calendar",
+    "description": "Streak Calendar is a simple yet powerful habit tracking tool based on the \"Don't Break the Chain\" method popularized by Jerry Seinfeld. The concept is simple: mark an X for each day you complete a habit, creating an unbroken chain that motivates you to maintain your streak.",
+    "features": {
+      "description": "Built with modern web technologies including Next.js, Convex, and Clerk, Streak Calendar helps you visualize your progress and stay motivated through:",
+      "list": {
+        "calendar": "Visual calendar view of your habits",
+        "tracking": "Weekly targets and completion tracking",
+        "streaks": "Streak counting and milestone tracking",
+        "themes": "Customizable calendar themes"
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "steps": {
+        "step1": "Create an account to get started",
+        "step2": "Add habits you want to track",
+        "step3": "Set weekly frequency targets",
+        "step4": "Mark habits complete each day",
+        "step5": "Watch your streaks grow!"
+      }
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "collection": {
+      "title": "1. Information Collection",
+      "content": "We collect information you provide directly to us, including your name, email, and habit tracking data. We also collect usage data to improve our service."
+    },
+    "usage": {
+      "title": "2. Information Usage",
+      "content": "We use your information to provide and improve our services, communicate with you, and ensure a personalized experience."
+    },
+    "security": {
+      "title": "3. Data Security",
+      "content": "We implement appropriate security measures to protect your personal information from unauthorized access, alteration, or destruction."
+    }
+  },
+  "footer": {
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "github": "GitHub",
+    "copyright": "Streak Calendar"
+  },
+  "habits": {
+    "addHabit": "Add Habit",
+    "createHabit": "Create New Habit",
+    "editHabit": "Edit Habit",
+    "deleteHabit": "Delete Habit",
+    "habitName": "Habit Name",
+    "namePlaceholder": "e.g., Exercise, Read, Meditate...",
+    "weeklyTarget": "Weekly Target",
+    "targetPlaceholder": "Number of days per week",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "create": "Create",
+    "loading": "Loading habits...",
+    "noHabits": "No habits found. Create one to get started!",
+    "deleteConfirm": "Are you sure you want to delete this habit?",
+    "deleteSuccess": "Habit deleted successfully",
+    "createSuccess": "Habit created successfully",
+    "updateSuccess": "Habit updated successfully",
+    "error": "An error occurred. Please try again.",
+    "hasBeenCreated": "has been created",
+    "streakInfo": {
+      "current": "Current Streak",
+      "longest": "Longest Streak",
+      "days": "days",
+      "target": "Target: {{count}} days/week"
+    },
+    "weeklyProgress": "{current}/{target}x this week",
+    "total": "Total",
+    "undo": "Undo",
+    "complete": "Complete",
+    "targetHelp": "How many times per week?",
+    "hasBeenDeleted": "has been removed from your habits",
+    "undoCompletion": "Completion undone",
+    "completionUndone": "Removed completion mark from {habitName}"
+  }
+}

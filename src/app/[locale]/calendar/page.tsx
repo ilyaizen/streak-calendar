@@ -4,7 +4,7 @@ import { SignedIn } from '@clerk/nextjs';
 import { HabitList } from '@/components/habits/habit-list';
 import { CalendarView } from '@/components/habits/calendar/calendar-view';
 import { useQuery, useMutation } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
+import { api } from '../../../../convex/_generated/api';
 import { Loader2, Plus } from 'lucide-react';
 import { startOfMonth, endOfMonth, subMonths } from 'date-fns';
 import { useEffect } from 'react';
@@ -14,8 +14,31 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslations } from 'next-intl';
+import { useConvexAuth } from 'convex/react';
+
+const colorThemes = [
+  'emerald',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'pink',
+  'rose',
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'teal',
+  'cyan',
+  'sky',
+] as const;
 
 export default function CalendarPage() {
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const t = useTranslations('calendar');
   const calendars = useQuery(api.calendars.list);
   const createCalendar = useMutation(api.calendars.create);
   const createDefaultCalendar = useMutation(api.calendars.createDefaultCalendar);
@@ -51,10 +74,22 @@ export default function CalendarPage() {
     setNewCalendarName('');
     setShowNewCalendarDialog(false);
     toast({
-      title: 'Calendar created',
-      description: `${newCalendarName} has been created`,
+      title: t('createSuccess'),
+      description: `${newCalendarName} ${t('hasBeenCreated')}`,
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null; // or redirect to login
+  }
 
   if (!completions || !calendars) {
     return (
@@ -80,54 +115,43 @@ export default function CalendarPage() {
             <DialogTrigger asChild>
               <Button>
                 <Plus className="mr-2 h-4 w-4" />
-                Add Calendar
+                {t('addCalendar')}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create New Calendar</DialogTitle>
+                <DialogTitle>{t('createCalendar')}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium">Name</label>
+                  <label className="text-sm font-medium">{t('calendarName')}</label>
                   <Input
                     value={newCalendarName}
                     onChange={(e) => setNewCalendarName(e.target.value)}
-                    placeholder="e.g., Work, Personal, Other..."
+                    placeholder={t('calendarNamePlaceholder')}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Color Theme</label>
+                  <label className="text-sm font-medium">{t('colorTheme')}</label>
                   <Select value={newCalendarColor} onValueChange={setNewCalendarColor}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="emerald">Emerald</SelectItem>
-                      <SelectItem value="blue">Blue</SelectItem>
-                      <SelectItem value="indigo">Indigo</SelectItem>
-                      <SelectItem value="violet">Violet</SelectItem>
-                      <SelectItem value="purple">Purple</SelectItem>
-                      <SelectItem value="pink">Pink</SelectItem>
-                      <SelectItem value="rose">Rose</SelectItem>
-                      <SelectItem value="red">Red</SelectItem>
-                      <SelectItem value="orange">Orange</SelectItem>
-                      <SelectItem value="amber">Amber</SelectItem>
-                      <SelectItem value="yellow">Yellow</SelectItem>
-                      <SelectItem value="lime">Lime</SelectItem>
-                      <SelectItem value="green">Green</SelectItem>
-                      <SelectItem value="teal">Teal</SelectItem>
-                      <SelectItem value="cyan">Cyan</SelectItem>
-                      <SelectItem value="sky">Sky</SelectItem>
+                      {colorThemes.map((color) => (
+                        <SelectItem key={color} value={color}>
+                          {color.charAt(0).toUpperCase() + color.slice(1)}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="flex justify-end gap-2">
                   <Button variant="outline" onClick={() => setShowNewCalendarDialog(false)}>
-                    Cancel
+                    {t('cancel')}
                   </Button>
                   <Button onClick={handleCreateCalendar} disabled={!newCalendarName}>
-                    Create
+                    {t('create')}
                   </Button>
                 </div>
               </div>

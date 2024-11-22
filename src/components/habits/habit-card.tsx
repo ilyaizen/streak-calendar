@@ -10,6 +10,7 @@ import { api } from '../../../convex/_generated/api';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { ConfettiButton } from '../ui/confetti';
+import { useTranslations } from 'next-intl';
 
 type HabitCardProps = {
   habit: {
@@ -20,6 +21,7 @@ type HabitCardProps = {
 };
 
 export function HabitCard({ habit }: HabitCardProps) {
+  const t = useTranslations('habits');
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [newName, setNewName] = useState(habit.name);
   const [newTarget, setNewTarget] = useState(habit.targetFrequency.toString());
@@ -36,8 +38,8 @@ export function HabitCard({ habit }: HabitCardProps) {
   const handleDelete = async () => {
     deleteHabit({ habitId: habit._id });
     toast({
-      title: 'Habit deleted',
-      description: `${habit.name} has been removed from your habits`,
+      title: t('deleteSuccess'),
+      description: `${habit.name} ${t('hasBeenDeleted')}`,
     });
     setShowEditDialog(false);
   };
@@ -66,8 +68,8 @@ export function HabitCard({ habit }: HabitCardProps) {
     await deleteCompletion({ completionId: lastCompletion });
     setCompletionHistory((prev) => prev.slice(0, -1));
     toast({
-      title: 'Completion undone',
-      description: `Removed completion mark from ${habit.name}`,
+      title: t('undoCompletion'),
+      description: t('completionUndone', { habitName: habit.name }),
     });
   };
 
@@ -101,7 +103,7 @@ export function HabitCard({ habit }: HabitCardProps) {
               </Button>
             </div>
             <p className="text-sm text-muted-foreground">
-              {stats?.weeklyCompletions || 0}/{habit.targetFrequency}x this week
+              {t('weeklyProgress', { current: stats?.weeklyCompletions || 0, target: habit.targetFrequency })}
             </p>
           </div>
         </div>
@@ -122,15 +124,15 @@ export function HabitCard({ habit }: HabitCardProps) {
           <div className="grid grid-cols-3 gap-2 border-t pt-4 text-center text-sm">
             <div>
               <div className="font-semibold">{stats.currentStreak}</div>
-              <div className="text-xs text-muted-foreground">Current Streak</div>
+              <div className="text-xs text-muted-foreground">{t('streakInfo.current')}</div>
             </div>
             <div>
               <div className="font-semibold">{stats.longestStreak}</div>
-              <div className="text-xs text-muted-foreground">Longest Streak</div>
+              <div className="text-xs text-muted-foreground">{t('streakInfo.longest')}</div>
             </div>
             <div>
               <div className="font-semibold">{stats.totalCompletions}</div>
-              <div className="text-xs text-muted-foreground">Total</div>
+              <div className="text-xs text-muted-foreground">{t('total')}</div>
             </div>
           </div>
         )}
@@ -139,7 +141,7 @@ export function HabitCard({ habit }: HabitCardProps) {
           {completionHistory.length > 0 && (
             <Button onClick={handleUndo} size="sm" variant="outline">
               <Undo2 className="mr-2 h-4 w-4" />
-              Undo
+              {t('undo')}
             </Button>
           )}
           <ConfettiButton
@@ -156,7 +158,7 @@ export function HabitCard({ habit }: HabitCardProps) {
             }}
             className="transition-all duration-200 hover:scale-105 active:scale-95"
           >
-            Complete
+            {t('complete')}
           </ConfettiButton>
         </div>
       </div>
@@ -164,18 +166,18 @@ export function HabitCard({ habit }: HabitCardProps) {
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit &quot;{habit.name}&quot; Habit</DialogTitle>
+            <DialogTitle>{t('editHabit', { habitName: habit.name })}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">
-                Habit Name
+                {t('habitName')}
               </label>
               <Input id="name" value={newName} onChange={(e) => setNewName(e.target.value)} autoFocus />
             </div>
             <div className="space-y-2">
               <label htmlFor="target" className="text-sm font-medium">
-                Weekly Target
+                {t('weeklyTarget')}
               </label>
               <Input
                 id="target"
@@ -185,25 +187,19 @@ export function HabitCard({ habit }: HabitCardProps) {
                 value={newTarget}
                 onChange={(e) => setNewTarget(e.target.value)}
               />
-              <p className="text-xs text-muted-foreground">How many times per week?</p>
+              <p className="text-xs text-muted-foreground">{t('targetHelp')}</p>
             </div>
           </div>
           <DialogFooter>
             <div className="flex w-full items-center justify-between">
-              <Button
-                variant="destructive"
-                onClick={() => {
-                  handleDelete();
-                  setShowEditDialog(false);
-                }}
-              >
-                Delete Habit
+              <Button variant="destructive" onClick={handleDelete}>
+                {t('deleteHabit')}
               </Button>
               <div className="flex gap-2">
                 <Button variant="outline" onClick={() => setShowEditDialog(false)}>
-                  Cancel
+                  {t('cancel')}
                 </Button>
-                <Button onClick={handleSaveEdits}>Save Changes</Button>
+                <Button onClick={handleSaveEdits}>{t('save')}</Button>
               </div>
             </div>
           </DialogFooter>

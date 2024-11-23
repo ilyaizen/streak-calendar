@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { notFound } from 'next/navigation';
 import '../globals.css';
 import type { Metadata } from 'next';
+import type { Viewport } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.streakcalendar.com'),
@@ -22,7 +23,13 @@ export const metadata: Metadata = {
     url: 'https://www.streakcalendar.com',
   },
   manifest: '/manifest.json',
-  viewport: 'width=device-width, initial-scale=0.8',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 0.8,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export function generateStaticParams() {

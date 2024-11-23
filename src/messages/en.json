@@ -12,7 +12,15 @@
     "title": "Track Your Habits,\nBuild Better Routines",
     "subtitle": "Simple, visual habit tracking that helps you build consistency and achieve your goals. Don't break the chain and watch your streaks grow.",
     "getStarted": "Get Started Free",
-    "goToCalendar": "Go to Calendar"
+    "goToCalendar": "Go to Calendar",
+    "hero": {
+      "features": {
+        "0": "Track daily habits visually",
+        "1": "Build consistent routines",
+        "2": "Monitor your progress",
+        "3": "Stay motivated with streaks"
+      }
+    }
   },
   "calendar": {
     "title": "Your Calendars",

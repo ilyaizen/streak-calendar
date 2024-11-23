@@ -9,7 +9,7 @@ import '../globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://streakcalendar.com'),
+  metadataBase: new URL('https://www.streakcalendar.com'),
   title: 'Streak Calendar',
   description: 'Track your habits and improve your life',
   keywords: ['habit tracking', 'streak calendar', 'productivity'],
@@ -19,9 +19,10 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
     type: 'website',
     siteName: 'Streak Calendar',
-    url: 'https://streakcalendar.com',
+    url: 'https://www.streakcalendar.com',
   },
   manifest: '/manifest.json',
+  viewport: 'width=device-width, initial-scale=0.8',
 };
 
 export function generateStaticParams() {

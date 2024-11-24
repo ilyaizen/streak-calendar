@@ -158,7 +158,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
           </div>
         ))}
         {emptyDays.map((_, index) => (
-          <div key={`empty-${index}`} className="aspect-square min-h-[2.5rem]" />
+          <div key={`empty-${index}`} className="aspect-square" />
         ))}
         {days.map((day) => {
           const dayCompletions = completions.filter((completion) => isSameDay(completion.completedAt, day));
@@ -181,7 +181,11 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
             <Popover key={day.toISOString()}>
               <PopoverTrigger asChild>
                 <button
-                  className={`aspect-square min-h-[2.5rem] rounded p-1 text-center text-sm ${getBgColor()} ${isToday(day) ? 'ring-2 ring-ring' : ''} transition-all duration-200 hover:brightness-110 ${hasCompletion ? 'text-white dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}
+                  className={`aspect-square w-full rounded p-1 text-center text-sm ${getBgColor()} ${
+                    isToday(day) ? 'ring-2 ring-ring' : ''
+                  } transition-all duration-200 hover:brightness-110 ${
+                    hasCompletion ? 'text-white dark:text-white' : 'text-gray-700 dark:text-gray-300'
+                  }`}
                 >
                   {format(day, 'd')}
                 </button>

@@ -142,6 +142,7 @@
     "delete": "מחק",
     "deleteConfirm": "אישור מחיקה",
     "deleteHabitConfirmText": "האם אתה בטוח שברצונך למחוק את {habitName}? לא ניתן לבטל פעולה זו.",
-    "daysPerWeek": "פעמים בשבוע"
+    "daysPerWeek": "פעמים בשבוע",
+    "activityOverview": "סקירת פעילות"
   }
 }

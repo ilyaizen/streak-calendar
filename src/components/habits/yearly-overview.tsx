@@ -5,12 +5,14 @@ import { Doc } from '../../../convex/_generated/dataModel';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface YearlyOverviewProps {
   completions: Doc<'completions'>[];
 }
 
 export function YearlyOverview({ completions }: YearlyOverviewProps) {
+  const t = useTranslations('habits');
   const today = new Date();
   const endDate = endOfMonth(today);
   const startDate = startOfMonth(subMonths(today, 11));
@@ -29,6 +31,9 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
     emptyDays: Array(getDay(days[0])).fill(null),
   }));
 
+  const isRTL = document.dir === 'rtl';
+  const displayMonths = isRTL ? [...monthsWithPadding].reverse() : monthsWithPadding;
+
   const completionsByDate = new Map<string, number>();
   completions.forEach((completion) => {
     const dateKey = new Date(completion.completedAt).toDateString();
@@ -46,11 +51,11 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Small delay to ensure content is rendered
     setTimeout(() => {
       if (scrollRef.current) {
+        const isRTL = document.dir === 'rtl';
         scrollRef.current.scrollTo({
-          left: scrollRef.current.scrollWidth,
+          left: isRTL ? 0 : scrollRef.current.scrollWidth,
           behavior: 'instant',
         });
       }
@@ -61,18 +66,20 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
     <TooltipProvider>
       <Card className="mx-auto max-w-3xl">
         <CardHeader>
-          <h3 className="font-medium">Activity Overview - {format(today, 'yyyy')}</h3>
+          <h3 className="font-medium">
+            {t('activityOverview')} - {format(today, 'yyyy')}
+          </h3>
         </CardHeader>
         <CardContent>
           <div
             ref={scrollRef}
-            className="overflow-x-auto pb-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-1.5"
+            className="overflow-x-auto pb-2 [direction:ltr] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-1.5"
           >
             <div className="min-w-[900px]">
               <div className="flex flex-col gap-2">
                 {/* Month labels */}
                 <div className="flex gap-2 text-xs text-muted-foreground">
-                  {monthsWithPadding.map(({ month }) => (
+                  {displayMonths.map(({ month }) => (
                     <div key={month.toISOString()} className="w-[84px] text-center">
                       {format(month, 'MMM')}
                     </div>
@@ -80,7 +87,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
                 </div>
                 {/* Calendar grid */}
                 <div className="flex gap-2">
-                  {monthsWithPadding.map(({ month, days, emptyDays }) => (
+                  {displayMonths.map(({ month, days, emptyDays }) => (
                     <div key={month.toISOString()} className="grid w-[84px] grid-cols-7 gap-[2px]">
                       {emptyDays.map((_, index) => (
                         <div key={`empty-${index}`} className="h-[8px] w-[8px]" />

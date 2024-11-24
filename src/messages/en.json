@@ -142,6 +142,7 @@
     "delete": "Delete",
     "deleteConfirm": "Delete Confirmation",
     "deleteHabitConfirmText": "Are you sure you want to delete {habitName}? This action cannot be undone.",
-    "daysPerWeek": "times per week"
+    "daysPerWeek": "times per week",
+    "activityOverview": "Activity Overview"
   }
 }

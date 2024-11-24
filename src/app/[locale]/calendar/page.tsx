@@ -6,7 +6,7 @@ import { CalendarView } from '@/components/habits/calendar/calendar-view';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { Loader2, Plus } from 'lucide-react';
-import { startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import { startOfMonth, endOfMonth, subMonths, startOfYear } from 'date-fns';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslations } from 'next-intl';
 import { useConvexAuth } from 'convex/react';
+import { YearlyOverview } from '@/components/habits/yearly-overview';
 
 const colorThemes = [
   'emerald',
@@ -45,7 +46,7 @@ export default function CalendarPage() {
   const { toast } = useToast();
   const today = new Date();
   const completions = useQuery(api.habits.getCompletions, {
-    startDate: startOfMonth(subMonths(today, 2)).getTime(),
+    startDate: startOfMonth(subMonths(today, 11)).getTime(),
     endDate: endOfMonth(today).getTime(),
   });
 
@@ -103,6 +104,7 @@ export default function CalendarPage() {
     <SignedIn>
       <div className="grid min-h-screen gap-8 p-8">
         <main className="space-y-8">
+          {completions && <YearlyOverview completions={completions} />}
           <div className="space-y-8">
             {calendars.map((calendar) => (
               <div key={calendar._id} className="space-y-8">

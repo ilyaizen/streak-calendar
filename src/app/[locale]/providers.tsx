@@ -21,8 +21,8 @@ export function Providers({
   return (
     <ClerkProvider
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}
-      afterSignInUrl="/calendar"
-      afterSignUpUrl="/calendar"
+      signInFallbackRedirectUrl="/calendar"
+      signUpUrl="/calendar"
     >
       <ConvexProviderWithClerk client={convexClient} useAuth={useAuth}>
         <AuthenticatedApp locale={locale} messages={messages}>

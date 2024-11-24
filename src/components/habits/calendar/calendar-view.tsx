@@ -74,7 +74,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="mx-auto max-w-[1200px] space-y-4">
       <div className="group relative flex items-center gap-2">
         <h2 className="cursor-pointer select-none text-2xl font-semibold" onDoubleClick={handleDoubleClick}>
           {calendar.name}
@@ -139,7 +139,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="grid auto-rows-fr gap-4 sm:grid-cols-1 lg:grid-cols-3">
+      <div className="mx-auto grid max-w-full gap-4 sm:grid-cols-1 lg:grid-cols-3">
         {[2, 1, 0].map((monthsAgo) => (
           <CalendarMonth
             key={monthsAgo}

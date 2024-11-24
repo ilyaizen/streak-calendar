@@ -7,7 +7,6 @@ import { Toaster } from '@/components/ui/toaster';
 import { notFound } from 'next/navigation';
 import '../globals.css';
 import type { Metadata } from 'next';
-import type { Viewport } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.streakcalendar.com'),
@@ -23,13 +22,6 @@ export const metadata: Metadata = {
     url: 'https://www.streakcalendar.com',
   },
   manifest: '/manifest.json',
-};
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 0.8,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export function generateStaticParams() {
@@ -59,7 +51,9 @@ export default async function LocaleLayout({
       <body className="flex min-h-full flex-col">
         <Providers locale={locale} messages={messages}>
           <Header />
-          <main className="mx-auto max-w-7xl">{children}</main>
+          <main id="main" role="main" className="mx-auto max-w-7xl">
+            {children}
+          </main>
           <Toaster />
           <Footer />
         </Providers>

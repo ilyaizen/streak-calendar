@@ -6,7 +6,7 @@ import { CalendarView } from '@/components/habits/calendar/calendar-view';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { Loader2, Plus } from 'lucide-react';
-import { startOfMonth, endOfMonth, subMonths, startOfYear } from 'date-fns';
+import { startOfMonth, endOfMonth, subMonths } from 'date-fns';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
+import { LanguageToggle } from './language-toggle';
 
 export function Footer() {
   const t = useTranslations('footer');
@@ -20,18 +21,13 @@ export function Footer() {
             <Link href={`/${locale}/terms`} className="hover:text-gray-900 dark:hover:text-gray-200">
               {t('terms')}
             </Link>
-            <a
-              href="https://github.com/ilyaizen/streak-calendar"
-              className="hover:text-gray-900 dark:hover:text-gray-200"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('github')}
-            </a>
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            © {currentYear} {t('copyright')}
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              © {currentYear} {t('copyright')}
+            </p>
+            <LanguageToggle />
+          </div>
         </div>
       </div>
     </footer>

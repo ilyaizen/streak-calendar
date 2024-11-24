@@ -3,6 +3,8 @@
 import { eachDayOfInterval, format, getDay, subMonths, eachMonthOfInterval, startOfMonth, endOfMonth } from 'date-fns';
 import { Doc } from '../../../convex/_generated/dataModel';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { useEffect, useRef } from 'react';
 
 interface YearlyOverviewProps {
   completions: Doc<'completions'>[];
@@ -41,50 +43,71 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
     return 'bg-emerald-500 dark:bg-emerald-900';
   };
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Small delay to ensure content is rendered
+    setTimeout(() => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTo({
+          left: scrollRef.current.scrollWidth,
+          behavior: 'instant',
+        });
+      }
+    }, 0);
+  }, []);
+
   return (
     <TooltipProvider>
-      <div className="space-y-2 rounded-lg border p-4">
-        <h3 className="font-medium">Activity Overview</h3>
-        <div className="flex flex-col gap-2">
-          {/* Month labels */}
-          <div className="grid grid-cols-12 gap-2 text-xs text-muted-foreground">
-            {monthsWithPadding.map(({ month }) => (
-              <div key={month.toISOString()} className="text-center">
-                {format(month, 'MMM')}
+      <Card className="mx-auto max-w-3xl">
+        <CardHeader>
+          <h3 className="font-medium">Activity Overview - {format(today, 'yyyy')}</h3>
+        </CardHeader>
+        <CardContent>
+          <div ref={scrollRef} className="overflow-x-auto pb-2">
+            <div className="min-w-[900px]">
+              <div className="flex flex-col gap-2">
+                {/* Month labels */}
+                <div className="flex gap-2 text-xs text-muted-foreground">
+                  {monthsWithPadding.map(({ month }) => (
+                    <div key={month.toISOString()} className="w-[84px] text-center">
+                      {format(month, 'MMM')}
+                    </div>
+                  ))}
+                </div>
+                {/* Calendar grid */}
+                <div className="flex gap-2">
+                  {monthsWithPadding.map(({ month, days, emptyDays }) => (
+                    <div key={month.toISOString()} className="grid w-[84px] grid-cols-7 gap-[2px]">
+                      {emptyDays.map((_, index) => (
+                        <div key={`empty-${index}`} className="h-[8px] w-[8px]" />
+                      ))}
+                      {days.map((day) => {
+                        const completionCount = completionsByDate.get(day.toDateString()) || 0;
+                        return (
+                          <Tooltip key={day.toISOString()}>
+                            <TooltipTrigger asChild>
+                              <div
+                                className={`h-[8px] w-[8px] rounded-sm ${getActivityLevel(completionCount)}`}
+                                data-date={format(day, 'yyyy-MM-dd')}
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-sm">
+                                {format(day, 'MMM d, yyyy')}: {completionCount} activities
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+            </div>
           </div>
-          {/* Calendar grid */}
-          <div className="flex gap-2">
-            {monthsWithPadding.map(({ month, days, emptyDays }) => (
-              <div key={month.toISOString()} className="grid grid-cols-7 gap-[2px]">
-                {emptyDays.map((_, index) => (
-                  <div key={`empty-${index}`} className="h-3 w-3" />
-                ))}
-                {days.map((day) => {
-                  const completionCount = completionsByDate.get(day.toDateString()) || 0;
-
-                  return (
-                    <Tooltip key={day.toISOString()}>
-                      <TooltipTrigger asChild>
-                        <div
-                          className={`h-3 w-3 rounded-sm ${getActivityLevel(completionCount)}`}
-                          data-date={format(day, 'yyyy-MM-dd')}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="text-sm">
-                          {format(day, 'MMM d, yyyy')}: {completionCount} activities
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </TooltipProvider>
   );
 }

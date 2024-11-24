@@ -37,10 +37,10 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
 
   const getActivityLevel = (completions: number) => {
     if (completions === 0) return 'bg-gray-100 dark:bg-gray-800';
-    if (completions <= 2) return 'bg-emerald-200 dark:bg-emerald-900/30';
-    if (completions <= 4) return 'bg-emerald-300 dark:bg-emerald-900/50';
-    if (completions <= 6) return 'bg-emerald-400 dark:bg-emerald-900/70';
-    return 'bg-emerald-500 dark:bg-emerald-900';
+    if (completions <= 2) return 'bg-red-200 dark:bg-red-700/60';
+    if (completions <= 4) return 'bg-red-300 dark:bg-red-600/80';
+    if (completions <= 6) return 'bg-red-400 dark:bg-red-500/90';
+    return 'bg-red-500 dark:bg-red-400';
   };
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -64,7 +64,10 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
           <h3 className="font-medium">Activity Overview - {format(today, 'yyyy')}</h3>
         </CardHeader>
         <CardContent>
-          <div ref={scrollRef} className="overflow-x-auto pb-2">
+          <div
+            ref={scrollRef}
+            className="overflow-x-auto pb-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-1.5"
+          >
             <div className="min-w-[900px]">
               <div className="flex flex-col gap-2">
                 {/* Month labels */}

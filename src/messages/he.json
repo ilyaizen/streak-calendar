@@ -44,7 +44,8 @@
     "delete": "מחק",
     "deleteConfirm": "אישור מחיקה",
     "deleteCalendarConfirmText": "האם אתה בטוח שברצונך למחוק את {calendarName}? כל ההרגלים והיסטוריית ההשלמות ימחקו לצמיתות. לא ניתן לבטל פעולה זו.",
-    "hasBeenDeleted": "נמחק"
+    "hasBeenDeleted": "נמחק",
+    "hasBeenUpdated": "עודכן"
   },
   "terms": {
     "title": "תנאי שימוש",

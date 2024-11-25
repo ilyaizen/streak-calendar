@@ -102,7 +102,7 @@ export default function CalendarPage() {
 
   return (
     <SignedIn>
-      <div className="grid min-h-screen gap-8 p-8">
+      <div className="gap-8 p-8">
         <main className="space-y-8">
           {completions && <YearlyOverview completions={completions} />}
           <div className="space-y-8">

@@ -80,7 +80,8 @@
     "about": "О нас",
     "privacy": "Конфиденциальность",
     "terms": "Условия",
-    "copyright": "Календарь Серий"
+    "copyright": "Календарь Серий",
+    "github": "GitHub"
   },
   "habits": {
     "addHabit": "Добавить привычку",
@@ -106,12 +107,23 @@
     "namePlaceholder": "Введите название привычки",
     "streakInfo": {
       "current": "Текущая серия",
-      "longest": "Самая длинная серия"
+      "longest": "Самая длинная серия",
+      "days": "дней",
+      "target": "Цель: {{count}} дней/неделю"
     },
     "targetPlaceholder": "Выберите цель",
     "total": "Всего выполнено",
     "weeklyProgress": "Прогресс за неделю",
-    "weeklyTarget": "Цель на неделю"
+    "weeklyTarget": "Цель на неделю",
+    "hasBeenCreated": "была создана",
+    "hasBeenDeleted": "была удалена из ваших привычек",
+    "loading": "Загрузка привычек...",
+    "noHabits": "Привычки не найдены. Создайте одну, чтобы начать!",
+    "targetHelp": "Сколько раз в неделю?",
+    "undo": "Отменить",
+    "undoCompletion": "Выполнение отменено",
+    "completionUndone": "Отменена отметка о выполнении для {habitName}",
+    "weeklyProgress": "{current}/{target}x на этой неделе"
   },
   "about": {
     "title": "О Календаре Серий",

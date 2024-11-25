@@ -49,7 +49,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     setShowEditDialog(false);
     toast({
       title: t('updateSuccess'),
-      description: `${calendar.name} ${t('hasBeenCreated')}`,
+      description: `${calendar.name} ${t('hasBeenUpdated')}`,
     });
   };
 

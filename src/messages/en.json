@@ -44,7 +44,8 @@
     "delete": "Delete",
     "deleteConfirm": "Delete Confirmation",
     "deleteCalendarConfirmText": "Are you sure you want to delete {calendarName}? All habits and their completion history will be permanently deleted. This action cannot be undone.",
-    "hasBeenDeleted": "has been deleted"
+    "hasBeenDeleted": "has been deleted",
+    "hasBeenUpdated": "has been updated"
   },
   "terms": {
     "title": "Terms of Service",

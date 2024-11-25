@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="py-20 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">{t('title')}</h1>
+        <h1 className="whitespace-pre-line text-4xl font-bold tracking-tight sm:text-6xl">{t('title')}</h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">{t('subtitle')}</p>
 
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">

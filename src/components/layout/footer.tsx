@@ -10,8 +10,8 @@ export function Footer() {
   return (
     <footer className="border-t dark:border-neutral-800">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <div className="flex gap-6 text-sm text-neutral-600 dark:text-neutral-400">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-4 text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
             <Link href={`/${locale}/about`} className="hover:text-neutral-900 dark:hover:text-neutral-200">
               {t("about")}
             </Link>
@@ -23,7 +23,7 @@ export function Footer() {
             </Link>
           </div>
           <div className="flex items-center gap-4">
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
               © {currentYear} {t("copyright")}
             </p>
             <LanguageToggle />

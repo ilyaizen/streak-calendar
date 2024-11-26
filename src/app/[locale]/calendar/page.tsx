@@ -1,45 +1,45 @@
-'use client';
+"use client";
 
-import { SignedIn } from '@clerk/nextjs';
-import { HabitList } from '@/components/habits/habit-list';
-import { CalendarView } from '@/components/habits/calendar/calendar-view';
-import { useQuery, useMutation } from 'convex/react';
-import { api } from '../../../../convex/_generated/api';
-import { Loader2, Plus } from 'lucide-react';
-import { startOfMonth, endOfMonth, subMonths } from 'date-fns';
-import { useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { useTranslations } from 'next-intl';
-import { useConvexAuth } from 'convex/react';
-import { YearlyOverview } from '@/components/habits/yearly-overview';
+import { SignedIn } from "@clerk/nextjs";
+import { HabitList } from "@/components/habits/habit-list";
+import { CalendarView } from "@/components/habits/calendar/calendar-view";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { Loader2, Plus } from "lucide-react";
+import { startOfMonth, endOfMonth, subMonths } from "date-fns";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
+import { useConvexAuth } from "convex/react";
+import { YearlyOverview } from "@/components/habits/yearly-overview";
 
 const colorThemes = [
-  'emerald',
-  'blue',
-  'indigo',
-  'violet',
-  'purple',
-  'pink',
-  'rose',
-  'red',
-  'orange',
-  'amber',
-  'yellow',
-  'lime',
-  'green',
-  'teal',
-  'cyan',
-  'sky',
+  "emerald",
+  "blue",
+  "indigo",
+  "violet",
+  "purple",
+  "pink",
+  "rose",
+  "red",
+  "orange",
+  "amber",
+  "yellow",
+  "lime",
+  "green",
+  "teal",
+  "cyan",
+  "sky",
 ] as const;
 
 export default function CalendarPage() {
   const { isAuthenticated, isLoading } = useConvexAuth();
-  const t = useTranslations('calendar');
+  const t = useTranslations("calendar");
   const calendars = useQuery(api.calendars.list);
   const createCalendar = useMutation(api.calendars.create);
   const createDefaultCalendar = useMutation(api.calendars.createDefaultCalendar);
@@ -51,8 +51,8 @@ export default function CalendarPage() {
   });
 
   const [showNewCalendarDialog, setShowNewCalendarDialog] = useState(false);
-  const [newCalendarName, setNewCalendarName] = useState('');
-  const [newCalendarColor, setNewCalendarColor] = useState('emerald');
+  const [newCalendarName, setNewCalendarName] = useState("");
+  const [newCalendarColor, setNewCalendarColor] = useState("emerald");
 
   // Create default calendar if none exists
   useEffect(() => {
@@ -72,11 +72,11 @@ export default function CalendarPage() {
       name: newCalendarName,
       colorTheme: newCalendarColor,
     });
-    setNewCalendarName('');
+    setNewCalendarName("");
     setShowNewCalendarDialog(false);
     toast({
-      title: t('createSuccess'),
-      description: `${newCalendarName} ${t('hasBeenCreated')}`,
+      title: t("createSuccess"),
+      description: `${newCalendarName} ${t("hasBeenCreated")}`,
     });
   };
 
@@ -117,24 +117,24 @@ export default function CalendarPage() {
             <DialogTrigger asChild>
               <Button>
                 <Plus className="h-4 w-4" />
-                {t('addCalendar')}
+                {t("addCalendar")}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>{t('createCalendar')}</DialogTitle>
+                <DialogTitle>{t("createCalendar")}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium">{t('calendarName')}</label>
+                  <label className="text-sm font-medium">{t("calendarName")}</label>
                   <Input
                     value={newCalendarName}
                     onChange={(e) => setNewCalendarName(e.target.value)}
-                    placeholder={t('calendarNamePlaceholder')}
+                    placeholder={t("calendarNamePlaceholder")}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">{t('colorTheme')}</label>
+                  <label className="text-sm font-medium">{t("colorTheme")}</label>
                   <Select value={newCalendarColor} onValueChange={setNewCalendarColor}>
                     <SelectTrigger>
                       <SelectValue />
@@ -150,10 +150,10 @@ export default function CalendarPage() {
                 </div>
                 <div className="flex justify-end gap-2">
                   <Button variant="outline" onClick={() => setShowNewCalendarDialog(false)}>
-                    {t('cancel')}
+                    {t("cancel")}
                   </Button>
                   <Button onClick={handleCreateCalendar} disabled={!newCalendarName}>
-                    {t('create')}
+                    {t("create")}
                   </Button>
                 </div>
               </div>

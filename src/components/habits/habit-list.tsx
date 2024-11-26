@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { useQuery, useMutation } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
-import { Loader2, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { useTranslations } from 'next-intl';
-import { Id } from '../../../convex/_generated/dataModel';
-import { HabitCard } from './habit-card';
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import { Loader2, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
+import { Id } from "../../../convex/_generated/dataModel";
+import { HabitCard } from "./habit-card";
 
-export function HabitList({ calendarId }: { calendarId: Id<'calendars'> }) {
-  const t = useTranslations('habits');
+export function HabitList({ calendarId }: { calendarId: Id<"calendars"> }) {
+  const t = useTranslations("habits");
   const habits = useQuery(api.habits.list, { calendarId });
   const createHabit = useMutation(api.habits.create);
   const { toast } = useToast();
 
   const [showNewHabitDialog, setShowNewHabitDialog] = useState(false);
-  const [newHabitName, setNewHabitName] = useState('');
-  const [targetFrequency, setTargetFrequency] = useState('3');
+  const [newHabitName, setNewHabitName] = useState("");
+  const [targetFrequency, setTargetFrequency] = useState("3");
 
   const handleCreateHabit = async () => {
     await createHabit({
@@ -28,12 +28,12 @@ export function HabitList({ calendarId }: { calendarId: Id<'calendars'> }) {
       targetFrequency: parseInt(targetFrequency),
       calendarId,
     });
-    setNewHabitName('');
-    setTargetFrequency('');
+    setNewHabitName("");
+    setTargetFrequency("");
     setShowNewHabitDialog(false);
     toast({
-      title: t('createSuccess'),
-      description: `${newHabitName} ${t('hasBeenCreated')}`,
+      title: t("createSuccess"),
+      description: `${newHabitName} ${t("hasBeenCreated")}`,
     });
   };
 
@@ -54,47 +54,47 @@ export function HabitList({ calendarId }: { calendarId: Id<'calendars'> }) {
           ))}
         </div>
       ) : (
-        <p className="text-center text-muted-foreground">{t('noHabits')}</p>
+        <p className="text-center text-muted-foreground">{t("noHabits")}</p>
       )}
 
       <Dialog open={showNewHabitDialog} onOpenChange={setShowNewHabitDialog}>
         <DialogTrigger asChild>
           <Button>
             <Plus className="h-4 w-4" />
-            {t('addHabit')}
+            {t("addHabit")}
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t('createHabit')}</DialogTitle>
+            <DialogTitle>{t("createHabit")}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium">{t('habitName')}</label>
+              <label className="text-sm font-medium">{t("habitName")}</label>
               <Input
                 value={newHabitName}
                 onChange={(e) => setNewHabitName(e.target.value)}
-                placeholder={t('namePlaceholder')}
+                placeholder={t("namePlaceholder")}
               />
             </div>
             <div>
-              <label className="text-sm font-medium">{t('weeklyTarget')}</label>
+              <label className="text-sm font-medium">{t("weeklyTarget")}</label>
               <Input
                 type="number"
                 min="1"
                 max="30"
                 value={targetFrequency}
                 onChange={(e) => setTargetFrequency(e.target.value)}
-                placeholder={t('targetPlaceholder')}
+                placeholder={t("targetPlaceholder")}
               />
-              <p className="text-xs text-muted-foreground">{t('daysPerWeek')}</p>
+              <p className="text-xs text-muted-foreground">{t("daysPerWeek")}</p>
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowNewHabitDialog(false)}>
-                {t('cancel')}
+                {t("cancel")}
               </Button>
               <Button onClick={handleCreateHabit} disabled={!newHabitName || !targetFrequency}>
-                {t('create')}
+                {t("create")}
               </Button>
             </div>
           </div>

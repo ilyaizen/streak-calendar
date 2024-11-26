@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import { useTranslations, useLocale } from 'next-intl';
-import { LanguageToggle } from './language-toggle';
+import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
+import { LanguageToggle } from "./language-toggle";
 
 export function Footer() {
-  const t = useTranslations('footer');
+  const t = useTranslations("footer");
   const currentYear = new Date().getFullYear();
   const locale = useLocale();
 
@@ -13,18 +13,18 @@ export function Footer() {
         <div className="flex items-center justify-between">
           <div className="flex gap-6 text-sm text-neutral-600 dark:text-neutral-400">
             <Link href={`/${locale}/about`} className="hover:text-neutral-900 dark:hover:text-neutral-200">
-              {t('about')}
+              {t("about")}
             </Link>
             <Link href={`/${locale}/privacy`} className="hover:text-neutral-900 dark:hover:text-neutral-200">
-              {t('privacy')}
+              {t("privacy")}
             </Link>
             <Link href={`/${locale}/terms`} className="hover:text-neutral-900 dark:hover:text-neutral-200">
-              {t('terms')}
+              {t("terms")}
             </Link>
           </div>
           <div className="flex items-center gap-4">
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              © {currentYear} {t('copyright')}
+              © {currentYear} {t("copyright")}
             </p>
             <LanguageToggle />
           </div>

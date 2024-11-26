@@ -1,5 +1,5 @@
-import { defineSchema, defineTable } from 'convex/server';
-import { v } from 'convex/values';
+import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
 
 export default defineSchema({
   calendars: defineTable({
@@ -8,19 +8,19 @@ export default defineSchema({
     colorTheme: v.string(),
     isDefault: v.boolean(),
     createdAt: v.number(),
-  }).index('by_user', ['userId']),
+  }).index("by_user", ["userId"]),
 
   habits: defineTable({
     name: v.string(),
     targetFrequency: v.number(),
     userId: v.string(),
-    calendarId: v.optional(v.id('calendars')),
+    calendarId: v.optional(v.id("calendars")),
     createdAt: v.number(),
-  }).index('by_calendar', ['calendarId']),
+  }).index("by_calendar", ["calendarId"]),
 
   completions: defineTable({
-    habitId: v.id('habits'),
+    habitId: v.id("habits"),
     userId: v.string(),
     completedAt: v.number(),
-  }).index('by_habit', ['habitId']),
+  }).index("by_habit", ["habitId"]),
 });

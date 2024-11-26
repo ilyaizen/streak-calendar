@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { eachDayOfInterval, format, getDay, subMonths, eachMonthOfInterval, startOfMonth, endOfMonth } from 'date-fns';
-import { Doc } from '../../../convex/_generated/dataModel';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { useEffect, useRef } from 'react';
-import { useTranslations } from 'next-intl';
+import { eachDayOfInterval, format, getDay, subMonths, eachMonthOfInterval, startOfMonth, endOfMonth } from "date-fns";
+import { Doc } from "../../../convex/_generated/dataModel";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 interface YearlyOverviewProps {
-  completions: Doc<'completions'>[];
+  completions: Doc<"completions">[];
 }
 
 export function YearlyOverview({ completions }: YearlyOverviewProps) {
-  const t = useTranslations('habits');
+  const t = useTranslations("habits");
   const today = new Date();
   const endDate = endOfMonth(today);
   const startDate = startOfMonth(subMonths(today, 11));
@@ -31,7 +31,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
     emptyDays: Array(getDay(days[0])).fill(null),
   }));
 
-  const isRTL = document.dir === 'rtl';
+  const isRTL = document.dir === "rtl";
   const displayMonths = isRTL ? [...monthsWithPadding].reverse() : monthsWithPadding;
 
   const completionsByDate = new Map<string, number>();
@@ -41,11 +41,11 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
   });
 
   const getActivityLevel = (completions: number) => {
-    if (completions === 0) return 'bg-neutral-100 dark:bg-neutral-800';
-    if (completions <= 2) return 'bg-red-200 dark:bg-red-700/60';
-    if (completions <= 4) return 'bg-red-300 dark:bg-red-600/80';
-    if (completions <= 6) return 'bg-red-400 dark:bg-red-500/90';
-    return 'bg-red-500 dark:bg-red-400';
+    if (completions === 0) return "bg-neutral-100 dark:bg-neutral-800";
+    if (completions <= 2) return "bg-red-200 dark:bg-red-700/60";
+    if (completions <= 4) return "bg-red-300 dark:bg-red-600/80";
+    if (completions <= 6) return "bg-red-400 dark:bg-red-500/90";
+    return "bg-red-500 dark:bg-red-400";
   };
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -53,10 +53,10 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
   useEffect(() => {
     setTimeout(() => {
       if (scrollRef.current) {
-        const isRTL = document.dir === 'rtl';
+        const isRTL = document.dir === "rtl";
         scrollRef.current.scrollTo({
           left: isRTL ? 0 : scrollRef.current.scrollWidth,
-          behavior: 'instant',
+          behavior: "instant",
         });
       }
     }, 0);
@@ -67,7 +67,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
       <Card className="mx-auto max-w-3xl">
         <CardHeader>
           <h3 className="font-medium">
-            {t('activityOverview')} - {format(today, 'yyyy')}
+            {t("activityOverview")} - {format(today, "yyyy")}
           </h3>
         </CardHeader>
         <CardContent>
@@ -81,7 +81,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
                 <div className="flex gap-2 text-xs text-muted-foreground">
                   {displayMonths.map(({ month }) => (
                     <div key={month.toISOString()} className="w-[84px] text-center">
-                      {format(month, 'MMM')}
+                      {format(month, "MMM")}
                     </div>
                   ))}
                 </div>
@@ -99,12 +99,12 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
                             <TooltipTrigger asChild>
                               <div
                                 className={`h-[8px] w-[8px] rounded-sm ${getActivityLevel(completionCount)}`}
-                                data-date={format(day, 'yyyy-MM-dd')}
+                                data-date={format(day, "yyyy-MM-dd")}
                               />
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-sm">
-                                {format(day, 'MMM d, yyyy')}: {completionCount} activities
+                                {format(day, "MMM d, yyyy")}: {completionCount} activities
                               </p>
                             </TooltipContent>
                           </Tooltip>

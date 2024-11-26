@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { CalendarMonth } from './calendar-month';
-import { subMonths } from 'date-fns';
-import { Doc } from '../../../../convex/_generated/dataModel';
-import { useQuery, useMutation } from 'convex/react';
-import { api } from '../../../../convex/_generated/api';
-import { Loader2, Settings } from 'lucide-react';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { useTranslations } from 'next-intl';
+import { CalendarMonth } from "./calendar-month";
+import { subMonths } from "date-fns";
+import { Doc } from "../../../../convex/_generated/dataModel";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { Loader2, Settings } from "lucide-react";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 interface CalendarViewProps {
-  completions: Doc<'completions'>[];
-  calendar: Doc<'calendars'>;
+  completions: Doc<"completions">[];
+  calendar: Doc<"calendars">;
 }
 
 export function CalendarView({ completions, calendar }: CalendarViewProps) {
-  const t = useTranslations('calendar');
+  const t = useTranslations("calendar");
   const habits = useQuery(api.habits.list, { calendarId: calendar._id });
   const updateCalendar = useMutation(api.calendars.update);
   const removeCalendar = useMutation(api.calendars.remove);
@@ -48,8 +48,8 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     });
     setShowEditDialog(false);
     toast({
-      title: t('updateSuccess'),
-      description: `${calendar.name} ${t('hasBeenUpdated')}`,
+      title: t("updateSuccess"),
+      description: `${calendar.name} ${t("hasBeenUpdated")}`,
     });
   };
 
@@ -57,8 +57,8 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     if (calendar.isDefault) return;
     await removeCalendar({ id: calendar._id });
     toast({
-      title: t('deleteSuccess'),
-      description: `${calendar.name} ${t('hasBeenDeleted')}`,
+      title: t("deleteSuccess"),
+      description: `${calendar.name} ${t("hasBeenDeleted")}`,
     });
     setShowEditDialog(false);
     setShowDeleteDialog(false);
@@ -87,15 +87,15 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{t('editCalendar')}</DialogTitle>
+              <DialogTitle>{t("editCalendar")}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">{t('calendarName')}</label>
+                <label className="text-sm font-medium">{t("calendarName")}</label>
                 <Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder={calendar.name} />
               </div>
               <div>
-                <label className="text-sm font-medium">{t('colorTheme')}</label>
+                <label className="text-sm font-medium">{t("colorTheme")}</label>
                 <Select value={newColorTheme} onValueChange={setNewColorTheme}>
                   <SelectTrigger>
                     <SelectValue />
@@ -124,15 +124,15 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
                 <div>
                   {!calendar.isDefault && (
                     <Button variant="destructive" onClick={() => setShowDeleteDialog(true)}>
-                      {t('deleteCalendar')}
+                      {t("deleteCalendar")}
                     </Button>
                   )}
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" onClick={() => setShowEditDialog(false)}>
-                    {t('cancel')}
+                    {t("cancel")}
                   </Button>
-                  <Button onClick={handleUpdateCalendar}>{t('save')}</Button>
+                  <Button onClick={handleUpdateCalendar}>{t("save")}</Button>
                 </div>
               </div>
             </div>
@@ -153,16 +153,16 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t('deleteConfirm')}</DialogTitle>
+            <DialogTitle>{t("deleteConfirm")}</DialogTitle>
           </DialogHeader>
-          <p className="text-muted-foreground">{t('deleteCalendarConfirmText', { calendarName: calendar.name })}</p>
+          <p className="text-muted-foreground">{t("deleteCalendarConfirmText", { calendarName: calendar.name })}</p>
           <DialogFooter>
             <div className="flex w-full items-center justify-end gap-2">
               <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
-                {t('cancel')}
+                {t("cancel")}
               </Button>
               <Button variant="destructive" onClick={handleDeleteCalendar}>
-                {t('delete')}
+                {t("delete")}
               </Button>
             </div>
           </DialogFooter>

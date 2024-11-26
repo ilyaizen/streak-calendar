@@ -1,27 +1,27 @@
-import { setRequestLocale } from 'next-intl/server';
-import { locales, Locale } from '@/i18n/settings';
-import { Providers } from './providers';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
-import { Toaster } from '@/components/ui/toaster';
-import { notFound } from 'next/navigation';
-import '../globals.css';
-import type { Metadata } from 'next';
+import { setRequestLocale } from "next-intl/server";
+import { locales, Locale } from "@/i18n/settings";
+import { Providers } from "./providers";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { Toaster } from "@/components/ui/toaster";
+import { notFound } from "next/navigation";
+import "../globals.css";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.streakcalendar.com'),
-  title: 'Streak Calendar',
-  description: 'Track your habits and improve your life',
-  keywords: ['habit tracking', 'streak calendar', 'productivity'],
+  metadataBase: new URL("https://www.streakcalendar.com"),
+  title: "Streak Calendar",
+  description: "Track your habits and improve your life",
+  keywords: ["habit tracking", "streak calendar", "productivity"],
   openGraph: {
-    title: 'Streak Calendar',
-    description: 'Track your habits and improve your life',
-    images: ['/og-image.png'],
-    type: 'website',
-    siteName: 'Streak Calendar',
-    url: 'https://www.streakcalendar.com',
+    title: "Streak Calendar",
+    description: "Track your habits and improve your life",
+    images: ["/og-image.png"],
+    type: "website",
+    siteName: "Streak Calendar",
+    url: "https://www.streakcalendar.com",
   },
-  manifest: '/manifest.json',
+  manifest: "/manifest.json",
 };
 
 export function generateStaticParams() {
@@ -47,7 +47,7 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale} dir={locale === 'he' ? 'rtl' : 'ltr'} className="h-full" suppressHydrationWarning>
+    <html lang={locale} dir={locale === "he" ? "rtl" : "ltr"} className="h-full" suppressHydrationWarning>
       <body className="flex min-h-full flex-col">
         <Providers locale={locale} messages={messages}>
           <Header />

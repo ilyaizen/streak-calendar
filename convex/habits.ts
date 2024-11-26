@@ -1,5 +1,5 @@
-import { mutation, query } from './_generated/server';
-import { v } from 'convex/values';
+import { mutation, query } from "./_generated/server";
+import { v } from "convex/values";
 
 /**
  * Creates a new habit for the authenticated user.
@@ -9,19 +9,19 @@ export const create = mutation({
   args: {
     name: v.string(),
     targetFrequency: v.number(),
-    calendarId: v.id('calendars'),
+    calendarId: v.id("calendars"),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     // Verify calendar belongs to user
     const calendar = await ctx.db.get(args.calendarId);
     if (!calendar || calendar.userId !== identity.subject) {
-      throw new Error('Calendar not found');
+      throw new Error("Calendar not found");
     }
 
-    return await ctx.db.insert('habits', {
+    return await ctx.db.insert("habits", {
       name: args.name,
       targetFrequency: args.targetFrequency,
       userId: identity.subject,
@@ -37,16 +37,16 @@ export const create = mutation({
  */
 export const list = query({
   args: {
-    calendarId: v.optional(v.id('calendars')),
+    calendarId: v.optional(v.id("calendars")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
-    let q = ctx.db.query('habits').filter((q) => q.eq(q.field('userId'), identity.subject));
+    let q = ctx.db.query("habits").filter((q) => q.eq(q.field("userId"), identity.subject));
 
     if (args.calendarId) {
-      q = q.filter((q) => q.eq(q.field('calendarId'), args.calendarId));
+      q = q.filter((q) => q.eq(q.field("calendarId"), args.calendarId));
     }
 
     return await q.collect();
@@ -59,20 +59,20 @@ export const list = query({
  */
 export const markComplete = mutation({
   args: {
-    habitId: v.id('habits'),
+    habitId: v.id("habits"),
     completedAt: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     // Verify habit belongs to user
     const habit = await ctx.db.get(args.habitId);
     if (!habit || habit.userId !== identity.subject) {
-      throw new Error('Habit not found');
+      throw new Error("Habit not found");
     }
 
-    const completionId = await ctx.db.insert('completions', {
+    const completionId = await ctx.db.insert("completions", {
       habitId: args.habitId,
       userId: identity.subject,
       completedAt: args.completedAt || Date.now(),
@@ -93,12 +93,12 @@ export const getCompletions = query({
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     return await ctx.db
-      .query('completions')
-      .filter((q) => q.eq(q.field('userId'), identity.subject))
-      .filter((q) => q.and(q.gte(q.field('completedAt'), args.startDate), q.lte(q.field('completedAt'), args.endDate)))
+      .query("completions")
+      .filter((q) => q.eq(q.field("userId"), identity.subject))
+      .filter((q) => q.and(q.gte(q.field("completedAt"), args.startDate), q.lte(q.field("completedAt"), args.endDate)))
       .collect();
   },
 });
@@ -108,21 +108,21 @@ export const getCompletions = query({
  * Includes current streak, longest streak, weekly progress, and total completions.
  */
 export const getHabitStats = query({
-  args: { habitId: v.id('habits') },
+  args: { habitId: v.id("habits") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     // Verify habit ownership
     const habit = await ctx.db.get(args.habitId);
     if (!habit || habit.userId !== identity.subject) {
-      throw new Error('Habit not found');
+      throw new Error("Habit not found");
     }
 
     // Get all completions for this habit
     const completions = await ctx.db
-      .query('completions')
-      .filter((q) => q.eq(q.field('habitId'), args.habitId))
+      .query("completions")
+      .filter((q) => q.eq(q.field("habitId"), args.habitId))
       .collect();
 
     // Sort completions by date (newest first) and normalize to start of day
@@ -196,21 +196,21 @@ export const getHabitStats = query({
  * Ensures atomic deletion of both habit and completion records.
  */
 export const deleteHabit = mutation({
-  args: { habitId: v.id('habits') },
+  args: { habitId: v.id("habits") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     // Verify habit belongs to user
     const habit = await ctx.db.get(args.habitId);
     if (!habit || habit.userId !== identity.subject) {
-      throw new Error('Habit not found');
+      throw new Error("Habit not found");
     }
 
     // Delete associated completions first
     await ctx.db
-      .query('completions')
-      .filter((q) => q.eq(q.field('habitId'), args.habitId))
+      .query("completions")
+      .filter((q) => q.eq(q.field("habitId"), args.habitId))
       .collect()
       .then((completions) => {
         return Promise.all(completions.map((completion) => ctx.db.delete(completion._id)));
@@ -227,17 +227,17 @@ export const deleteHabit = mutation({
  */
 export const renameHabit = mutation({
   args: {
-    habitId: v.id('habits'),
+    habitId: v.id("habits"),
     name: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     // Verify habit belongs to user
     const habit = await ctx.db.get(args.habitId);
     if (!habit || habit.userId !== identity.subject) {
-      throw new Error('Habit not found');
+      throw new Error("Habit not found");
     }
 
     await ctx.db.patch(args.habitId, { name: args.name });
@@ -246,15 +246,15 @@ export const renameHabit = mutation({
 
 // Add new mutation to delete a completion
 export const deleteCompletion = mutation({
-  args: { completionId: v.id('completions') },
+  args: { completionId: v.id("completions") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     // Verify completion belongs to user
     const completion = await ctx.db.get(args.completionId);
     if (!completion || completion.userId !== identity.subject) {
-      throw new Error('Completion not found');
+      throw new Error("Completion not found");
     }
 
     await ctx.db.delete(args.completionId);
@@ -264,20 +264,20 @@ export const deleteCompletion = mutation({
 // Add new mutation
 export const updateTargetFrequency = mutation({
   args: {
-    habitId: v.id('habits'),
+    habitId: v.id("habits"),
     targetFrequency: v.number(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     const habit = await ctx.db.get(args.habitId);
     if (!habit || habit.userId !== identity.subject) {
-      throw new Error('Habit not found');
+      throw new Error("Habit not found");
     }
 
     if (args.targetFrequency < 1 || args.targetFrequency > 7) {
-      throw new Error('Target frequency must be between 1 and 7');
+      throw new Error("Target frequency must be between 1 and 7");
     }
 
     await ctx.db.patch(args.habitId, { targetFrequency: args.targetFrequency });

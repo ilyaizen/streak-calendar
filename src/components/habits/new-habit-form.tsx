@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useMutation } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { useToast } from '@/hooks/use-toast';
-import { DialogClose } from '../ui/dialog';
-import { Id } from '../../../convex/_generated/dataModel';
+import { useState } from "react";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { DialogClose } from "../ui/dialog";
+import { Id } from "../../../convex/_generated/dataModel";
 
 interface NewHabitFormProps {
-  calendarId: Id<'calendars'>;
+  calendarId: Id<"calendars">;
   onSuccess: () => void;
 }
 
 export function NewHabitForm({ calendarId, onSuccess }: NewHabitFormProps) {
-  const [name, setName] = useState('');
-  const [targetFrequency, setTargetFrequency] = useState('3');
+  const [name, setName] = useState("");
+  const [targetFrequency, setTargetFrequency] = useState("3");
   const createHabit = useMutation(api.habits.create);
   const { toast } = useToast();
 
@@ -28,18 +28,18 @@ export function NewHabitForm({ calendarId, onSuccess }: NewHabitFormProps) {
         targetFrequency: parseInt(targetFrequency),
         calendarId,
       });
-      setName('');
-      setTargetFrequency('3');
+      setName("");
+      setTargetFrequency("3");
       toast({
-        title: 'Habit created',
+        title: "Habit created",
         description: `${name} has been added to your habits`,
       });
       onSuccess();
     } catch {
       toast({
-        title: 'Error',
-        description: 'Failed to create habit',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to create habit",
+        variant: "destructive",
       });
     }
   };

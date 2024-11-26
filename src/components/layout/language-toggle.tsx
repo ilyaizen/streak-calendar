@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { usePathname, useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { usePathname, useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const languages = {
-  en: { name: 'English', flag: '🇺🇸' },
-  ru: { name: 'Русский', flag: '🇷🇺' },
-  he: { name: 'עברית', flag: '🇮🇱' },
+  en: { name: "English", flag: "🇺🇸" },
+  ru: { name: "Русский", flag: "🇷🇺" },
+  he: { name: "עברית", flag: "🇮🇱" },
 } as const;
 
 export function LanguageToggle() {
@@ -17,10 +17,10 @@ export function LanguageToggle() {
 
   const handleLanguageChange = (newLocale: string) => {
     // Split the pathname into segments
-    const segments = pathname.split('/');
+    const segments = pathname.split("/");
 
     // Find the locale segment index (it might be at index 1 or not present)
-    const localeIndex = segments.findIndex((segment) => ['en', 'he', 'ru'].includes(segment));
+    const localeIndex = segments.findIndex((segment) => ["en", "he", "ru"].includes(segment));
 
     if (localeIndex === -1) {
       // No locale in path, add it after the first segment (which is empty)
@@ -31,7 +31,7 @@ export function LanguageToggle() {
     }
 
     // Reconstruct the path
-    const newPath = segments.join('/');
+    const newPath = segments.join("/");
 
     router.push(newPath);
   };

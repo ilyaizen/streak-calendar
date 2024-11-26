@@ -1,14 +1,14 @@
-import { mutation, query } from './_generated/server';
-import { v } from 'convex/values';
+import { mutation, query } from "./_generated/server";
+import { v } from "convex/values";
 
 export const list = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     return await ctx.db
-      .query('calendars')
-      .filter((q) => q.eq(q.field('userId'), identity.subject))
+      .query("calendars")
+      .filter((q) => q.eq(q.field("userId"), identity.subject))
       .collect();
   },
 });
@@ -20,17 +20,17 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     // Check if this is the first calendar for the user
     const existingCalendars = await ctx.db
-      .query('calendars')
-      .filter((q) => q.eq(q.field('userId'), identity.subject))
+      .query("calendars")
+      .filter((q) => q.eq(q.field("userId"), identity.subject))
       .collect();
 
     const isFirst = existingCalendars.length === 0;
 
-    return await ctx.db.insert('calendars', {
+    return await ctx.db.insert("calendars", {
       name: args.name,
       userId: identity.subject,
       colorTheme: args.colorTheme,
@@ -42,17 +42,17 @@ export const create = mutation({
 
 export const update = mutation({
   args: {
-    id: v.id('calendars'),
+    id: v.id("calendars"),
     name: v.string(),
     colorTheme: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     const calendar = await ctx.db.get(args.id);
     if (!calendar || calendar.userId !== identity.subject) {
-      throw new Error('Calendar not found');
+      throw new Error("Calendar not found");
     }
 
     await ctx.db.patch(args.id, {
@@ -64,32 +64,32 @@ export const update = mutation({
 
 export const remove = mutation({
   args: {
-    id: v.id('calendars'),
+    id: v.id("calendars"),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     const calendar = await ctx.db.get(args.id);
     if (!calendar || calendar.userId !== identity.subject) {
-      throw new Error('Calendar not found');
+      throw new Error("Calendar not found");
     }
 
     if (calendar.isDefault) {
-      throw new Error('Cannot delete default calendar');
+      throw new Error("Cannot delete default calendar");
     }
 
     // Delete associated habits first
     const habits = await ctx.db
-      .query('habits')
-      .filter((q) => q.eq(q.field('calendarId'), args.id))
+      .query("habits")
+      .filter((q) => q.eq(q.field("calendarId"), args.id))
       .collect();
 
     for (const habit of habits) {
       // Delete completions for each habit
       await ctx.db
-        .query('completions')
-        .filter((q) => q.eq(q.field('habitId'), habit._id))
+        .query("completions")
+        .filter((q) => q.eq(q.field("habitId"), habit._id))
         .collect()
         .then((completions) => {
           return Promise.all(completions.map((completion) => ctx.db.delete(completion._id)));
@@ -107,12 +107,12 @@ export const remove = mutation({
 export const createDefaultCalendar = mutation({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     // Check if user already has any calendars
     const existingCalendars = await ctx.db
-      .query('calendars')
-      .filter((q) => q.eq(q.field('userId'), identity.subject))
+      .query("calendars")
+      .filter((q) => q.eq(q.field("userId"), identity.subject))
       .collect();
 
     if (existingCalendars.length > 0) {
@@ -121,10 +121,10 @@ export const createDefaultCalendar = mutation({
     }
 
     // Create default calendar
-    return await ctx.db.insert('calendars', {
-      name: 'Default',
+    return await ctx.db.insert("calendars", {
+      name: "Default",
       userId: identity.subject,
-      colorTheme: 'emerald',
+      colorTheme: "emerald",
       isDefault: true,
       createdAt: Date.now(),
     });
@@ -132,14 +132,14 @@ export const createDefaultCalendar = mutation({
 });
 
 export const get = query({
-  args: { id: v.id('calendars') },
+  args: { id: v.id("calendars") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error('Not authenticated');
+    if (!identity) throw new Error("Not authenticated");
 
     const calendar = await ctx.db.get(args.id);
     if (!calendar || calendar.userId !== identity.subject) {
-      throw new Error('Calendar not found');
+      throw new Error("Calendar not found");
     }
 
     return calendar;

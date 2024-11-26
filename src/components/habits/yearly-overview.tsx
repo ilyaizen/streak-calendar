@@ -75,9 +75,8 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
             ref={scrollRef}
             className="overflow-x-auto pb-2 [direction:ltr] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-1.5"
           >
-            <div className="min-w-[600px] sm:min-w-[750px] md:min-w-[900px]">
+            <div className="min-w-[600px] sm:min-w-[750px]">
               <div className="flex flex-col gap-2">
-                {/* Month labels */}
                 <div className="flex gap-2 text-xs text-muted-foreground">
                   {displayMonths.map(({ month }) => (
                     <div key={month.toISOString()} className="w-[84px] text-center">
@@ -85,7 +84,6 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
                     </div>
                   ))}
                 </div>
-                {/* Calendar grid */}
                 <div className="flex gap-2">
                   {displayMonths.map(({ month, days, emptyDays }) => (
                     <div key={month.toISOString()} className="grid w-[84px] grid-cols-7 gap-[2px]">

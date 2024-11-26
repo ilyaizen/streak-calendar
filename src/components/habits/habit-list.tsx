@@ -46,15 +46,15 @@ export function HabitList({ calendarId }: { calendarId: Id<"calendars"> }) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-2 sm:space-y-4 md:space-y-8">
       {habits.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-2 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
           {habits.map((habit) => (
             <HabitCard key={habit._id} habit={habit} />
           ))}
         </div>
       ) : (
-        <p className="text-center text-muted-foreground">{t("noHabits")}</p>
+        <p className="text-center text-sm text-muted-foreground sm:text-base">{t("noHabits")}</p>
       )}
 
       <Dialog open={showNewHabitDialog} onOpenChange={setShowNewHabitDialog}>

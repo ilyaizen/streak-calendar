@@ -64,9 +64,9 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
 
   return (
     <TooltipProvider>
-      <Card className="mx-auto max-w-3xl">
+      <Card className="mx-auto max-w-[calc(100vw-16px)] overflow-hidden sm:max-w-3xl">
         <CardHeader>
-          <h3 className="font-medium">
+          <h3 className="text-sm font-medium sm:text-base">
             {t("activityOverview")} - {format(today, "yyyy")}
           </h3>
         </CardHeader>
@@ -75,7 +75,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
             ref={scrollRef}
             className="overflow-x-auto pb-2 [direction:ltr] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-1.5"
           >
-            <div className="min-w-[900px]">
+            <div className="min-w-[600px] sm:min-w-[750px] md:min-w-[900px]">
               <div className="flex flex-col gap-2">
                 {/* Month labels */}
                 <div className="flex gap-2 text-xs text-muted-foreground">

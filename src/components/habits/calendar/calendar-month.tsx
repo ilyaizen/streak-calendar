@@ -149,11 +149,11 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
   type ColorTheme = keyof typeof themes;
 
   return (
-    <div className="mx-auto w-full max-w-[350px] space-y-2">
-      <h3 className="truncate font-medium">{format(date, "MMMM yyyy")}</h3>
-      <div className="grid grid-cols-7 gap-1">
+    <div className="mx-auto w-full max-w-[350px] space-y-1 sm:space-y-2">
+      <h3 className="truncate text-xs font-medium sm:text-sm md:text-base">{format(date, "MMMM yyyy")}</h3>
+      <div className="grid grid-cols-7 gap-[2px] sm:gap-1">
         {dayLabels.map((label) => (
-          <div key={label} className="text-center text-sm text-muted-foreground">
+          <div key={label} className="text-center text-[10px] text-muted-foreground sm:text-xs">
             {label}
           </div>
         ))}
@@ -181,11 +181,9 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
             <Popover key={day.toISOString()}>
               <PopoverTrigger asChild>
                 <button
-                  className={`aspect-square w-full rounded p-1 text-center text-sm ${getBgColor()} ${
+                  className={`aspect-square w-full rounded p-0.5 text-center text-[10px] sm:p-1 sm:text-xs ${getBgColor()} ${
                     isToday(day) ? "ring-2 ring-ring" : ""
-                  } transition-all duration-200 hover:brightness-110 ${
-                    hasCompletion ? "text-white dark:text-white" : "text-neutral-700 dark:text-neutral-300"
-                  }`}
+                  } transition-all duration-200 hover:brightness-110`}
                 >
                   {format(day, "d")}
                 </button>

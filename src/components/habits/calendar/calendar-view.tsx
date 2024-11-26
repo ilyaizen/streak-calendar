@@ -74,9 +74,12 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2 sm:space-y-4 md:space-y-8">
       <div className="group relative flex items-center gap-2">
-        <h2 className="cursor-pointer select-none break-words text-2xl font-semibold" onDoubleClick={handleDoubleClick}>
+        <h2
+          className="cursor-pointer select-none break-words text-lg font-semibold sm:text-xl md:text-2xl"
+          onDoubleClick={handleDoubleClick}
+        >
           {calendar.name}
         </h2>
         <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
@@ -139,7 +142,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="mx-auto grid gap-4 sm:grid-cols-1 lg:grid-cols-3">
+      <div className="mx-auto grid max-w-full gap-2 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
         {[2, 1, 0].map((monthsAgo) => (
           <CalendarMonth
             key={monthsAgo}

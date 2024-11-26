@@ -102,12 +102,12 @@ export default function CalendarPage() {
 
   return (
     <SignedIn>
-      <div className="gap-8 p-8">
-        <main className="space-y-8">
+      <div className="gap-2 p-2 sm:gap-4 sm:p-4 md:gap-8 md:p-8">
+        <main className="space-y-2 sm:space-y-4 md:space-y-8">
           {completions && <YearlyOverview completions={completions} />}
-          <div className="mx-auto w-[1024px] space-y-8">
+          <div className="mx-auto max-w-full space-y-2 sm:space-y-4 md:space-y-8">
             {calendars.map((calendar) => (
-              <div key={calendar._id} className="space-y-8">
+              <div key={calendar._id} className="space-y-2 sm:space-y-4 md:space-y-8">
                 <CalendarView completions={completions} calendar={calendar} />
                 <HabitList calendarId={calendar._id} />
               </div>

@@ -41,7 +41,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
   });
 
   const getActivityLevel = (completions: number) => {
-    if (completions === 0) return 'bg-gray-100 dark:bg-gray-800';
+    if (completions === 0) return 'bg-neutral-100 dark:bg-neutral-800';
     if (completions <= 2) return 'bg-red-200 dark:bg-red-700/60';
     if (completions <= 4) return 'bg-red-300 dark:bg-red-600/80';
     if (completions <= 6) return 'bg-red-400 dark:bg-red-500/90';

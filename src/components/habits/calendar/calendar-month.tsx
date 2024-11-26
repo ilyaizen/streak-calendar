@@ -166,7 +166,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
 
           // Get appropriate background color based on completion percentage
           const getBgColor = () => {
-            if (!hasCompletion) return 'bg-gray-100 dark:bg-gray-800';
+            if (!hasCompletion) return 'bg-neutral-100 dark:bg-neutral-800';
 
             const percentage = (dayCompletions.length / (habits?.length || 1)) * 100;
 
@@ -184,7 +184,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
                   className={`aspect-square w-full rounded p-1 text-center text-sm ${getBgColor()} ${
                     isToday(day) ? 'ring-2 ring-ring' : ''
                   } transition-all duration-200 hover:brightness-110 ${
-                    hasCompletion ? 'text-white dark:text-white' : 'text-gray-700 dark:text-gray-300'
+                    hasCompletion ? 'text-white dark:text-white' : 'text-neutral-700 dark:text-neutral-300'
                   }`}
                 >
                   {format(day, 'd')}

@@ -51,7 +51,7 @@ export default async function LocaleLayout({
       <body className="flex min-h-full flex-col">
         <Providers locale={locale} messages={messages}>
           <Header />
-          <main id="main" role="main" className="mx-auto max-w-5xl">
+          <main role="main" className="mx-auto max-w-5xl">
             {children}
           </main>
           <Toaster />

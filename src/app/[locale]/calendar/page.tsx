@@ -103,7 +103,7 @@ export default function CalendarPage() {
   return (
     <SignedIn>
       <div className="gap-2 p-2 sm:gap-4 sm:p-4 md:gap-8 md:p-8">
-        <main className="space-y-2 sm:space-y-4 md:space-y-8">
+        <main role="main" className="space-y-2 sm:space-y-4 md:space-y-8">
           {completions && <YearlyOverview completions={completions} />}
           <div className="mx-auto w-[400px] space-y-2 sm:w-[1024px] sm:space-y-4 md:space-y-8">
             {calendars.map((calendar) => (

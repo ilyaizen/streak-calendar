@@ -1,12 +1,13 @@
-import { setRequestLocale } from "next-intl/server";
-import { locales, Locale } from "@/i18n/settings";
-import { Providers } from "./providers";
-import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
 import { Toaster } from "@/components/ui/toaster";
-import { notFound } from "next/navigation";
-import "../globals.css";
+import { Locale, locales } from "@/i18n/settings";
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
+
+import "../globals.css";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.streakcalendar.com"),

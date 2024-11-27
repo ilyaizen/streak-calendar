@@ -1,5 +1,6 @@
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
-import { useTranslations, useLocale } from "next-intl";
+
 import { LanguageToggle } from "./language-toggle";
 
 export function Footer() {

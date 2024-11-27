@@ -1,11 +1,12 @@
 "use client";
 
-import { eachDayOfInterval, format, getDay, subMonths, eachMonthOfInterval, startOfMonth, endOfMonth } from "date-fns";
-import { Doc } from "../../../convex/_generated/dataModel";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { useEffect, useRef } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { eachDayOfInterval, eachMonthOfInterval, endOfMonth, format, getDay, startOfMonth, subMonths } from "date-fns";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef } from "react";
+
+import { Doc } from "@server/convex/_generated/dataModel";
 
 interface YearlyOverviewProps {
   completions: Doc<"completions">[];

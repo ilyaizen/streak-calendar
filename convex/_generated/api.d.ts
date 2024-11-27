@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 /**
  * Generated `api` utility.
  *
@@ -7,8 +8,8 @@
  * To regenerate, run `npx convex dev`.
  * @module
  */
-
 import type { ApiFromModules, FilterApi, FunctionReference } from "convex/server";
+
 import type * as calendars from "../calendars.js";
 import type * as habits from "../habits.js";
 

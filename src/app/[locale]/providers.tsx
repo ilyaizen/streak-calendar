@@ -1,10 +1,10 @@
 "use client";
 
+import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { ClerkProvider, useAuth } from "@clerk/clerk-react";
+import { AbstractIntlMessages, NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
-import { NextIntlClientProvider, AbstractIntlMessages } from "next-intl";
 
 // Create the Convex client outside of the component
 const convexClient = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);

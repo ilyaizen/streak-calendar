@@ -1,12 +1,13 @@
 "use client";
 
-import { startOfMonth, endOfMonth, eachDayOfInterval, format, isSameDay, isToday, getDay } from "date-fns";
-import { Doc } from "../../../../convex/_generated/dataModel";
+import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Button } from "@/components/ui/button";
+import { eachDayOfInterval, endOfMonth, format, getDay, isSameDay, isToday, startOfMonth } from "date-fns";
 import { Check, X } from "lucide-react";
+
+import { api } from "@server/convex/_generated/api";
+import { Doc } from "@server/convex/_generated/dataModel";
 
 interface CalendarMonthProps {
   date: Date;

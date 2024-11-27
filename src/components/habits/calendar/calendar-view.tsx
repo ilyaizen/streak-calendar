@@ -1,18 +1,20 @@
 "use client";
 
-import { CalendarMonth } from "./calendar-month";
-import { subMonths } from "date-fns";
-import { Doc } from "../../../../convex/_generated/dataModel";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Loader2, Settings } from "lucide-react";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQuery } from "convex/react";
+import { subMonths } from "date-fns";
+import { Loader2, Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+
+import { api } from "@server/convex/_generated/api";
+import { Doc } from "@server/convex/_generated/dataModel";
+
+import { CalendarMonth } from "./calendar-month";
 
 interface CalendarViewProps {
   completions: Doc<"completions">[];

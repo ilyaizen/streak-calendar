@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { DialogClose } from "../ui/dialog";
-import { Id } from "../../../convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { useState } from "react";
+
+import { api } from "@server/convex/_generated/api";
+import { Id } from "@server/convex/_generated/dataModel";
 
 interface NewHabitFormProps {
   calendarId: Id<"calendars">;

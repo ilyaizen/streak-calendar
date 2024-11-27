@@ -1,22 +1,23 @@
 "use client";
 
-import { SignedIn } from "@clerk/nextjs";
-import { HabitList } from "@/components/habits/habit-list";
 import { CalendarView } from "@/components/habits/calendar/calendar-view";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Loader2, Plus } from "lucide-react";
-import { startOfMonth, endOfMonth, subMonths } from "date-fns";
-import { useEffect } from "react";
+import { HabitList } from "@/components/habits/habit-list";
+import { YearlyOverview } from "@/components/habits/yearly-overview";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useTranslations } from "next-intl";
+import { SignedIn } from "@clerk/nextjs";
+import { useMutation, useQuery } from "convex/react";
 import { useConvexAuth } from "convex/react";
-import { YearlyOverview } from "@/components/habits/yearly-overview";
+import { endOfMonth, startOfMonth, subMonths } from "date-fns";
+import { Loader2, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+import { useState } from "react";
+
+import { api } from "@server/convex/_generated/api";
 
 const colorThemes = [
   "emerald",

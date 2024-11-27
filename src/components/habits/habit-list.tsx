@@ -1,15 +1,17 @@
 "use client";
 
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQuery } from "convex/react";
+import { Loader2, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Id } from "../../../convex/_generated/dataModel";
+import { useState } from "react";
+
+import { api } from "@server/convex/_generated/api";
+import { Id } from "@server/convex/_generated/dataModel";
+
 import { HabitCard } from "./habit-card";
 
 export function HabitList({ calendarId }: { calendarId: Id<"calendars"> }) {

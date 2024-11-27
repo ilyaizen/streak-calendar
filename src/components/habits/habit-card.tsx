@@ -1,18 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { Undo2, Settings } from "lucide-react";
-import { Input } from "../ui/input";
-import { Id } from "../../../convex/_generated/dataModel";
-import { Button } from "../ui/button";
-import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { ConfettiButton } from "@/components/ui/confetti";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
-import { ConfettiButton } from "../ui/confetti";
+import { useMutation, useQuery } from "convex/react";
+import { Settings, Undo2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { Progress } from "../ui/progress";
+import { useState } from "react";
+
+import { api } from "@server/convex/_generated/api";
+import { Id } from "@server/convex/_generated/dataModel";
 
 type HabitCardProps = {
   habit: {

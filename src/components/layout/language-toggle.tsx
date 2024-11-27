@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLocale } from "next-intl";
+import { usePathname, useRouter } from "next/navigation";
 
 const languages = {
   en: { name: "English", flag: "🇺🇸" },

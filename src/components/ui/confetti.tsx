@@ -1,13 +1,12 @@
-import type { ReactNode } from "react";
-import React, { createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from "react";
+import { Button, ButtonProps } from "@/components/ui/button";
 import type {
   GlobalOptions as ConfettiGlobalOptions,
   CreateTypes as ConfettiInstance,
   Options as ConfettiOptions,
 } from "canvas-confetti";
 import confetti from "canvas-confetti";
-
-import { Button, ButtonProps } from "@/components/ui/button";
+import type { ReactNode } from "react";
+import React, { createContext, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 
 type Api = {
   fire: (options?: ConfettiOptions) => void;

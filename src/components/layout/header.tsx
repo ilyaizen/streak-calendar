@@ -1,9 +1,10 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
-import { ThemeToggle } from "./theme-toggle";
-import Image from "next/image";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
+import Image from "next/image";
+import Link from "next/link";
+
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
   const t = useTranslations("app");

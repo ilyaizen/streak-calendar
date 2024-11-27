@@ -4,7 +4,6 @@ import { LanguageToggle } from "./language-toggle";
 
 export function Footer() {
   const t = useTranslations("footer");
-  const currentYear = new Date().getFullYear();
   const locale = useLocale();
 
   return (

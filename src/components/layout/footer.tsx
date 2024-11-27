@@ -22,10 +22,7 @@ export function Footer() {
               {t("terms")}
             </Link>
           </div>
-          <div className="flex w-full items-center justify-between gap-4">
-            <p className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
-              © {currentYear} {t("copyright")}
-            </p>
+          <div className="flex w-full items-center justify-end gap-4">
             <LanguageToggle />
           </div>
         </div>

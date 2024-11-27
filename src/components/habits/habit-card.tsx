@@ -155,10 +155,10 @@ export function HabitCard({ habit }: HabitCardProps) {
             }}
             options={{
               get angle() {
-                return Math.random() * 360;
+                return Math.random() * 90 + 45;
               },
               spread: 90,
-              particleCount: 100,
+              particleCount: 15,
             }}
             className="transition-all duration-200 active:scale-95"
           >

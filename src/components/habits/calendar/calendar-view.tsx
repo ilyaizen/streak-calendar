@@ -142,7 +142,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="mx-auto grid max-w-full gap-2 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto grid max-w-full gap-2 sm:gap-4 lg:grid-cols-3">
         {[2, 1, 0].map((monthsAgo) => (
           <CalendarMonth
             key={monthsAgo}

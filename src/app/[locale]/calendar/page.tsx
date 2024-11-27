@@ -105,7 +105,7 @@ export default function CalendarPage() {
       <div className="gap-2 p-2 sm:gap-4 sm:p-4 md:gap-8 md:p-8">
         <main className="space-y-2 sm:space-y-4 md:space-y-8">
           {completions && <YearlyOverview completions={completions} />}
-          <div className="mx-auto space-y-2 sm:w-[1024px] sm:space-y-4 md:space-y-8">
+          <div className="mx-auto w-[400px] space-y-2 sm:w-[1024px] sm:space-y-4 md:space-y-8">
             {calendars.map((calendar) => (
               <div key={calendar._id} className="space-y-2 sm:space-y-4 md:space-y-8">
                 <CalendarView completions={completions} calendar={calendar} />

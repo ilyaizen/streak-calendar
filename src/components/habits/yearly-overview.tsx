@@ -75,18 +75,18 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
             ref={scrollRef}
             className="overflow-x-auto pb-2 [direction:ltr] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-1.5"
           >
-            <div className="min-w-[600px] sm:min-w-[750px]">
-              <div className="flex flex-col gap-2">
-                <div className="flex gap-2 text-xs text-muted-foreground">
+            <div className="min-w-[920px]">
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-3 text-sm text-muted-foreground">
                   {displayMonths.map(({ month }) => (
-                    <div key={month.toISOString()} className="w-[84px] text-center">
+                    <div key={month.toISOString()} className="w-[100px] text-center">
                       {format(month, "MMM")}
                     </div>
                   ))}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   {displayMonths.map(({ month, days, emptyDays }) => (
-                    <div key={month.toISOString()} className="grid w-[84px] grid-cols-7 gap-[2px]">
+                    <div key={month.toISOString()} className="grid w-[100px] grid-cols-7 gap-[2px]">
                       {emptyDays.map((_, index) => (
                         <div key={`empty-${index}`} className="h-[8px] w-[8px]" />
                       ))}

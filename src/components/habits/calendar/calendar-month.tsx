@@ -151,7 +151,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
 
   return (
     <div className="mx-auto w-full space-y-2 sm:space-y-4">
-      <h3 className="truncate text-sm font-medium sm:text-base">{format(date, "MMMM yyyy")}</h3>
+      <h3 className="truncate text-lg font-medium sm:text-base">{format(date, "MMMM yyyy")}</h3>
       <div className="grid grid-cols-7 gap-1">
         {dayLabels.map((label) => (
           <div key={label} className="text-center text-sm text-muted-foreground sm:text-xs">

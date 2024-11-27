@@ -89,7 +89,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
                   {displayMonths.map(({ month, days, emptyDays }) => (
                     <div key={month.toISOString()} className="grid w-[100px] grid-cols-7 gap-[2px]">
                       {emptyDays.map((_, index) => (
-                        <div key={`empty-${index}`} className="h-[8px] w-[8px]" />
+                        <div key={`empty-${index}`} className="h-[7px] w-[7px]" />
                       ))}
                       {days.map((day) => {
                         const completionCount = completionsByDate.get(day.toDateString()) || 0;
@@ -97,7 +97,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
                           <Tooltip key={day.toISOString()}>
                             <TooltipTrigger asChild>
                               <div
-                                className={`h-[8px] w-[8px] rounded-sm ${getActivityLevel(completionCount)}`}
+                                className={`h-[7px] w-[7px] rounded-sm ${getActivityLevel(completionCount)}`}
                                 data-date={format(day, "yyyy-MM-dd")}
                               />
                             </TooltipTrigger>

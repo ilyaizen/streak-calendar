@@ -101,6 +101,7 @@ export function HabitCard({ habit }: HabitCardProps) {
                 setNewTarget(habit.targetFrequency.toString());
                 setShowEditDialog(true);
               }}
+              aria-label={t("editHabit")}
             >
               <Settings className="h-3 w-3" />
             </Button>
@@ -112,7 +113,15 @@ export function HabitCard({ habit }: HabitCardProps) {
 
         <CardContent className="space-y-4">
           {/* Progress bar */}
-          {stats && <Progress value={stats.weeklyProgress * 100} />}
+          {stats && (
+            <Progress
+              value={stats.weeklyProgress * 100}
+              aria-label={t("weeklyProgress", {
+                current: stats.weeklyCompletions || 0,
+                target: habit.targetFrequency,
+              })}
+            />
+          )}
 
           {stats && (
             <div className="grid grid-cols-3 gap-2 border-t pt-4 text-center text-sm">
@@ -134,7 +143,7 @@ export function HabitCard({ habit }: HabitCardProps) {
 
         <CardFooter className="justify-end gap-2">
           {completionHistory.length > 0 && (
-            <Button onClick={handleUndo} size="sm" variant="outline">
+            <Button onClick={handleUndo} size="sm" variant="outline" aria-label={t("undoCompletion")}>
               <Undo2 className="mr-2 h-4 w-4" />
               {t("undo")}
             </Button>

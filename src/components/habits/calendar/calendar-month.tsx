@@ -181,6 +181,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
             <Popover key={day.toISOString()}>
               <PopoverTrigger asChild>
                 <button
+                  aria-label={`View habits for ${format(day, "MMMM d, yyyy")}`}
                   className={`aspect-square w-full rounded p-0.5 text-center text-[10px] sm:p-1 sm:text-xs ${getBgColor()} ${
                     isToday(day) ? "ring-2 ring-ring" : ""
                   } transition-all duration-200 hover:brightness-110`}
@@ -201,6 +202,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
                             <Button
                               variant="ghost"
                               size="sm"
+                              aria-label={`Remove completion for ${habit.name}`}
                               onClick={() => deleteCompletion({ completionId: completion._id })}
                             >
                               <X className="h-4 w-4" />
@@ -209,6 +211,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
                             <Button
                               variant="ghost"
                               size="sm"
+                              aria-label={`Mark ${habit.name} as complete`}
                               onClick={() =>
                                 markComplete({
                                   habitId: habit._id,

@@ -1,10 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { eachDayOfInterval, eachMonthOfInterval, endOfMonth, format, getDay, startOfMonth, subMonths } from "date-fns";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Doc } from "@server/convex/_generated/dataModel";
 
@@ -14,9 +16,10 @@ interface YearlyOverviewProps {
 
 export function YearlyOverview({ completions }: YearlyOverviewProps) {
   const t = useTranslations("habits");
+  const [yearOffset, setYearOffset] = useState(0);
   const today = new Date();
-  const endDate = endOfMonth(today);
-  const startDate = startOfMonth(subMonths(today, 11));
+  const endDate = endOfMonth(new Date(today.getFullYear() + yearOffset, today.getMonth(), 1));
+  const startDate = startOfMonth(subMonths(endDate, 11));
 
   const months = eachMonthOfInterval({ start: startDate, end: endDate });
   const days = eachDayOfInterval({ start: startDate, end: endDate });
@@ -66,10 +69,23 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
   return (
     <TooltipProvider>
       <Card className="mx-auto overflow-hidden">
-        <CardHeader>
-          <h3 className="text-sm font-medium sm:text-base">
-            {t("activityOverview")} - {format(today, "yyyy")}
-          </h3>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <h2 className="font-medium sm:text-lg">
+            {t("activityOverview")} - {format(endDate, "yyyy")}
+          </h2>
+          <div className="flex gap-1 h-fit">
+            <Button variant="ghost" size="icon" onClick={() => setYearOffset((prev) => prev - 1)}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setYearOffset((prev) => prev + 1)}
+              disabled={yearOffset >= 0}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div

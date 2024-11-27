@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQuery } from "convex/react";
 import { subMonths } from "date-fns";
-import { Loader2, Settings } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -33,6 +33,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
   const [newName, setNewName] = useState(calendar.name);
   const [newColorTheme, setNewColorTheme] = useState(calendar.colorTheme);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [monthOffset, setMonthOffset] = useState(0);
 
   if (!habits) {
     return (
@@ -144,16 +145,36 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="mx-auto grid max-w-full gap-2 sm:gap-4 lg:grid-cols-3">
-        {[2, 1, 0].map((monthsAgo) => (
-          <CalendarMonth
-            key={monthsAgo}
-            date={subMonths(today, monthsAgo)}
-            completions={calendarCompletions}
-            colorTheme={calendar.colorTheme}
-            habits={habits}
-          />
-        ))}
+      <div className="relative mx-auto flex max-w-full items-center group">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute -left-12 opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={() => setMonthOffset((prev) => prev + 3)}
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+
+        <div className="grid w-full gap-2 sm:gap-4 lg:grid-cols-3">
+          {[2, 1, 0].map((monthsAgo) => (
+            <CalendarMonth
+              key={monthsAgo + monthOffset}
+              date={subMonths(today, monthsAgo + monthOffset)}
+              completions={calendarCompletions}
+              colorTheme={calendar.colorTheme}
+              habits={habits}
+            />
+          ))}
+        </div>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute -right-12 opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={() => setMonthOffset((prev) => prev - 3)}
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
       </div>
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent>

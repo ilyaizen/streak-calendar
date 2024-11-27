@@ -153,7 +153,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
       <h3 className="truncate text-sm font-medium sm:text-base">{format(date, "MMMM yyyy")}</h3>
       <div className="grid grid-cols-7 gap-1">
         {dayLabels.map((label) => (
-          <div key={label} className="text-center text-[10px] text-muted-foreground sm:text-xs">
+          <div key={label} className="text-center text-sm text-muted-foreground sm:text-xs">
             {label}
           </div>
         ))}
@@ -182,7 +182,7 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
               <PopoverTrigger asChild>
                 <button
                   aria-label={`View habits for ${format(day, "MMMM d, yyyy")}`}
-                  className={`aspect-square w-full rounded p-0.5 text-center text-[10px] sm:p-1 sm:text-xs ${getBgColor()} ${
+                  className={`aspect-square w-full rounded p-0.5 text-center text-sm sm:p-1 sm:text-xs ${getBgColor()} ${
                     isToday(day) ? "ring-2 ring-ring" : ""
                   } transition-all duration-200 hover:brightness-110`}
                 >

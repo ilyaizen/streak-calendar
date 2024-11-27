@@ -149,9 +149,9 @@ export function CalendarMonth({ date, completions, colorTheme, habits }: Calenda
   type ColorTheme = keyof typeof themes;
 
   return (
-    <div className="mx-auto w-full max-w-[350px] space-y-1 sm:space-y-2">
-      <h3 className="truncate text-xs font-medium sm:text-sm md:text-base">{format(date, "MMMM yyyy")}</h3>
-      <div className="grid grid-cols-7 gap-[2px] sm:gap-1">
+    <div className="mx-auto w-full space-y-2 sm:space-y-4">
+      <h3 className="truncate text-sm font-medium sm:text-base">{format(date, "MMMM yyyy")}</h3>
+      <div className="grid grid-cols-7 gap-1">
         {dayLabels.map((label) => (
           <div key={label} className="text-center text-[10px] text-muted-foreground sm:text-xs">
             {label}

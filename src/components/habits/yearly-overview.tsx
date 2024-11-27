@@ -64,7 +64,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
 
   return (
     <TooltipProvider>
-      <Card className="mx-auto max-w-[calc(100vw-16px)] overflow-hidden sm:max-w-3xl">
+      <Card className="mx-auto overflow-hidden">
         <CardHeader>
           <h3 className="text-sm font-medium sm:text-base">
             {t("activityOverview")} - {format(today, "yyyy")}
@@ -75,7 +75,7 @@ export function YearlyOverview({ completions }: YearlyOverviewProps) {
             ref={scrollRef}
             className="overflow-x-auto pb-2 [direction:ltr] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-1.5"
           >
-            <div className="min-w-[920px]">
+            <div className="min-w-[768px] sm:min-w-[920px]">
               <div className="flex flex-col gap-3">
                 <div className="flex gap-3 text-sm text-muted-foreground">
                   {displayMonths.map(({ month }) => (

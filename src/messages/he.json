@@ -45,7 +45,19 @@
     "deleteConfirm": "אישור מחיקה",
     "deleteCalendarConfirmText": "האם אתה בטוח שברצונך למחוק את {calendarName}? כל ההרגלים והיסטוריית ההשלמות ימחקו לצמיתות. לא ניתן לבטל פעולה זו.",
     "hasBeenDeleted": "נמחק",
-    "hasBeenUpdated": "עודכן"
+    "hasBeenUpdated": "עודכן",
+    "export": "ייצוא",
+    "import": "ייבוא",
+    "importSuccess": "הייבוא הצליח",
+    "dataImported": "הנתונים שלך יובאו בהצלחה",
+    "importError": "הייבוא נכשל",
+    "invalidFile": "פורמט קובץ לא חוקי. אנא בחר קובץ ייצוא תקין.",
+    "makeDefault": "הפוך לברירת מחדל",
+    "defaultCalendar": "זהו יומן ברירת המחדל שלך",
+    "isNowDefault": "הוא כעת יומן ברירת המחדל שלך",
+    "exportConfirmation": "האם אתה בטוח שברצונך לייצא את נתוני היומן שלך?",
+    "importConfirmation": "האם אתה בטוח שברצונך לייבא קובץ זה? פעולה זו תחליף את הנתונים הקיימים.",
+    "continue": "המשך"
   },
   "terms": {
     "title": "תנאי שימוש",

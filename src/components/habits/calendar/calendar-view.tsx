@@ -26,6 +26,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
   const habits = useQuery(api.habits.list, { calendarId: calendar._id });
   const updateCalendar = useMutation(api.calendars.update);
   const removeCalendar = useMutation(api.calendars.remove);
+  const setDefaultCalendar = useMutation(api.calendars.setDefault);
   const { toast } = useToast();
   const today = new Date();
 
@@ -65,6 +66,15 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     });
     setShowEditDialog(false);
     setShowDeleteDialog(false);
+  };
+
+  const handleSetDefault = async () => {
+    await setDefaultCalendar({ id: calendar._id });
+    setShowEditDialog(false);
+    toast({
+      title: t("updateSuccess"),
+      description: `${calendar.name} ${t("isNowDefault")}`,
+    });
   };
 
   // Filter completions for this calendar's habits
@@ -127,11 +137,18 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
                 </Select>
               </div>
               <div className="flex justify-between">
-                <div>
-                  {!calendar.isDefault && (
-                    <Button variant="destructive" onClick={() => setShowDeleteDialog(true)}>
-                      {t("deleteCalendar")}
-                    </Button>
+                <div className="space-x-2">
+                  {!calendar.isDefault ? (
+                    <>
+                      <Button variant="destructive" onClick={() => setShowDeleteDialog(true)}>
+                        {t("delete")}
+                      </Button>
+                      <Button variant="outline" onClick={handleSetDefault}>
+                        {t("makeDefault")}
+                      </Button>
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">{t("defaultCalendar")}</p>
                   )}
                 </div>
                 <div className="flex gap-2">

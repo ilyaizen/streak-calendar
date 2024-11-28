@@ -3,6 +3,16 @@
 import { CalendarView } from "@/components/habits/calendar/calendar-view";
 import { HabitList } from "@/components/habits/habit-list";
 import { YearlyOverview } from "@/components/habits/yearly-overview";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -56,6 +66,9 @@ export default function CalendarPage() {
   const [showNewCalendarDialog, setShowNewCalendarDialog] = useState(false);
   const [newCalendarName, setNewCalendarName] = useState("");
   const [newCalendarColor, setNewCalendarColor] = useState("emerald");
+  const [showExportDialog, setShowExportDialog] = useState(false);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [showImportDialog, setShowImportDialog] = useState(false);
 
   // Create default calendar if none exists
   useEffect(() => {
@@ -83,7 +96,8 @@ export default function CalendarPage() {
     });
   };
 
-  const handleExport = () => {
+  const handleExportConfirm = () => {
+    setShowExportDialog(false);
     if (!exportData) return;
 
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
@@ -97,12 +111,20 @@ export default function CalendarPage() {
     URL.revokeObjectURL(url);
   };
 
-  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (file) {
+      setImportFile(file);
+      setShowImportDialog(true);
+    }
+    e.target.value = "";
+  };
+
+  const handleImportConfirm = async () => {
+    if (!importFile) return;
 
     try {
-      const text = await file.text();
+      const text = await importFile.text();
       const data = JSON.parse(text);
       await importData({ data });
       toast({
@@ -116,9 +138,8 @@ export default function CalendarPage() {
         variant: "destructive",
       });
     }
-
-    // Reset the input
-    e.target.value = "";
+    setImportFile(null);
+    setShowImportDialog(false);
   };
 
   if (isLoading) {
@@ -201,7 +222,7 @@ export default function CalendarPage() {
                 </div>
               </DialogContent>
             </Dialog>
-            <Button onClick={handleExport} variant="outline">
+            <Button onClick={() => setShowExportDialog(true)} variant="outline">
               <Download className="h-4 w-4 mr-2" />
               {t("export")}
             </Button>
@@ -209,9 +230,35 @@ export default function CalendarPage() {
               <label className="cursor-pointer">
                 <Upload className="h-4 w-4 mr-2" />
                 {t("import")}
-                <input type="file" accept=".json" className="hidden" onChange={handleImport} />
+                <input type="file" accept=".json" className="hidden" onChange={handleImportSelect} />
               </label>
             </Button>
+
+            <AlertDialog open={showExportDialog} onOpenChange={setShowExportDialog}>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t("export")}</AlertDialogTitle>
+                  <AlertDialogDescription>{t("exportConfirmation")}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleExportConfirm}>{t("continue")}</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog open={showImportDialog} onOpenChange={setShowImportDialog}>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t("import")}</AlertDialogTitle>
+                  <AlertDialogDescription>{t("importConfirmation")}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel onClick={() => setImportFile(null)}>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleImportConfirm}>{t("continue")}</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </main>
       </div>

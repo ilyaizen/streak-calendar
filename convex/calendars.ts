@@ -173,33 +173,94 @@ export const importData = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
-    for (const calendarData of args.data.calendars) {
-      // Create calendar
-      const calendarId = await ctx.db.insert("calendars", {
-        name: calendarData.name,
-        userId: identity.subject,
-        colorTheme: calendarData.colorTheme,
-        isDefault: false,
-        createdAt: Date.now(),
-      });
+    const existingCalendars = await ctx.db
+      .query("calendars")
+      .filter((q) => q.eq(q.field("userId"), identity.subject))
+      .collect();
 
-      // Create habits for this calendar
-      for (const habitData of calendarData.habits) {
-        const habitId = await ctx.db.insert("habits", {
-          name: habitData.name,
-          targetFrequency: habitData.targetFrequency,
+    for (const calendarData of args.data.calendars) {
+      const existingCalendar = existingCalendars.find((cal) => cal.name === calendarData.name);
+      const calendarId = existingCalendar?._id;
+
+      if (calendarId) {
+        // Update existing calendar
+        await ctx.db.patch(calendarId, {
+          colorTheme: calendarData.colorTheme,
+        });
+
+        // Get existing habits for matching
+        const existingHabits = await ctx.db
+          .query("habits")
+          .filter((q) => q.eq(q.field("calendarId"), calendarId))
+          .collect();
+
+        // Import habits
+        for (const habitData of calendarData.habits) {
+          // Find or create habit
+          const existingHabit = existingHabits.find((h) => h.name === habitData.name);
+          const habitId =
+            existingHabit?._id ||
+            (await ctx.db.insert("habits", {
+              name: habitData.name,
+              targetFrequency: habitData.targetFrequency,
+              userId: identity.subject,
+              calendarId,
+              createdAt: Date.now(),
+            }));
+
+          if (existingHabit) {
+            // Update existing habit if needed
+            await ctx.db.patch(habitId, {
+              targetFrequency: habitData.targetFrequency,
+            });
+          }
+
+          // Get existing completions to avoid duplicates
+          const existingCompletions = await ctx.db
+            .query("completions")
+            .filter((q) => q.eq(q.field("habitId"), habitId))
+            .collect();
+
+          // Add only new completions
+          for (const completion of habitData.completions) {
+            const exists = existingCompletions.some((ec) => ec.completedAt === completion.completedAt);
+
+            if (!exists) {
+              await ctx.db.insert("completions", {
+                habitId,
+                userId: identity.subject,
+                completedAt: completion.completedAt,
+              });
+            }
+          }
+        }
+      } else {
+        // Create new calendar if it doesn't exist
+        const newCalendarId = await ctx.db.insert("calendars", {
+          name: calendarData.name,
           userId: identity.subject,
-          calendarId,
+          colorTheme: calendarData.colorTheme,
+          isDefault: false,
           createdAt: Date.now(),
         });
 
-        // Create completions for this habit
-        for (const completion of habitData.completions) {
-          await ctx.db.insert("completions", {
-            habitId,
+        // Create all habits and completions for new calendar
+        for (const habitData of calendarData.habits) {
+          const habitId = await ctx.db.insert("habits", {
+            name: habitData.name,
+            targetFrequency: habitData.targetFrequency,
             userId: identity.subject,
-            completedAt: completion.completedAt,
+            calendarId: newCalendarId,
+            createdAt: Date.now(),
           });
+
+          for (const completion of habitData.completions) {
+            await ctx.db.insert("completions", {
+              habitId,
+              userId: identity.subject,
+              completedAt: completion.completedAt,
+            });
+          }
         }
       }
     }
@@ -249,5 +310,39 @@ export const exportData = query({
     }
 
     return { calendars: result };
+  },
+});
+
+export const setDefault = mutation({
+  args: {
+    id: v.id("calendars"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    // Get the calendar to make default
+    const newDefaultCalendar = await ctx.db.get(args.id);
+    if (!newDefaultCalendar || newDefaultCalendar.userId !== identity.subject) {
+      throw new Error("Calendar not found");
+    }
+
+    // Get current default calendar
+    const currentDefault = await ctx.db
+      .query("calendars")
+      .filter((q) => q.and(q.eq(q.field("userId"), identity.subject), q.eq(q.field("isDefault"), true)))
+      .first();
+
+    // Update old default if exists
+    if (currentDefault) {
+      await ctx.db.patch(currentDefault._id, {
+        isDefault: false,
+      });
+    }
+
+    // Set new default
+    await ctx.db.patch(args.id, {
+      isDefault: true,
+    });
   },
 });

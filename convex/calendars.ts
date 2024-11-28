@@ -146,3 +146,108 @@ export const get = query({
     return calendar;
   },
 });
+
+export const importData = mutation({
+  args: {
+    data: v.object({
+      calendars: v.array(
+        v.object({
+          name: v.string(),
+          colorTheme: v.string(),
+          habits: v.array(
+            v.object({
+              name: v.string(),
+              targetFrequency: v.number(),
+              completions: v.array(
+                v.object({
+                  completedAt: v.number(),
+                })
+              ),
+            })
+          ),
+        })
+      ),
+    }),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    for (const calendarData of args.data.calendars) {
+      // Create calendar
+      const calendarId = await ctx.db.insert("calendars", {
+        name: calendarData.name,
+        userId: identity.subject,
+        colorTheme: calendarData.colorTheme,
+        isDefault: false,
+        createdAt: Date.now(),
+      });
+
+      // Create habits for this calendar
+      for (const habitData of calendarData.habits) {
+        const habitId = await ctx.db.insert("habits", {
+          name: habitData.name,
+          targetFrequency: habitData.targetFrequency,
+          userId: identity.subject,
+          calendarId,
+          createdAt: Date.now(),
+        });
+
+        // Create completions for this habit
+        for (const completion of habitData.completions) {
+          await ctx.db.insert("completions", {
+            habitId,
+            userId: identity.subject,
+            completedAt: completion.completedAt,
+          });
+        }
+      }
+    }
+  },
+});
+
+export const exportData = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const calendars = await ctx.db
+      .query("calendars")
+      .filter((q) => q.eq(q.field("userId"), identity.subject))
+      .collect();
+
+    const result = [];
+
+    for (const calendar of calendars) {
+      const habits = await ctx.db
+        .query("habits")
+        .filter((q) => q.eq(q.field("calendarId"), calendar._id))
+        .collect();
+
+      const habitsWithCompletions = await Promise.all(
+        habits.map(async (habit) => {
+          const completions = await ctx.db
+            .query("completions")
+            .filter((q) => q.eq(q.field("habitId"), habit._id))
+            .collect();
+
+          return {
+            name: habit.name,
+            targetFrequency: habit.targetFrequency,
+            completions: completions.map((c) => ({
+              completedAt: c.completedAt,
+            })),
+          };
+        })
+      );
+
+      result.push({
+        name: calendar.name,
+        colorTheme: calendar.colorTheme,
+        habits: habitsWithCompletions,
+      });
+    }
+
+    return { calendars: result };
+  },
+});

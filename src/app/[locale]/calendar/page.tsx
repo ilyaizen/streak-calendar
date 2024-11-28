@@ -11,8 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import { SignedIn } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import { useConvexAuth } from "convex/react";
-import { endOfMonth, startOfMonth, subMonths } from "date-fns";
-import { Loader2, Plus } from "lucide-react";
+import { endOfMonth, format, startOfMonth, subMonths } from "date-fns";
+import { Download, Loader2, Plus, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -50,6 +50,8 @@ export default function CalendarPage() {
     startDate: startOfMonth(subMonths(today, 11)).getTime(),
     endDate: endOfMonth(today).getTime(),
   });
+  const exportData = useQuery(api.calendars.exportData);
+  const importData = useMutation(api.calendars.importData);
 
   const [showNewCalendarDialog, setShowNewCalendarDialog] = useState(false);
   const [newCalendarName, setNewCalendarName] = useState("");
@@ -79,6 +81,44 @@ export default function CalendarPage() {
       title: t("createSuccess"),
       description: `${newCalendarName} ${t("hasBeenCreated")}`,
     });
+  };
+
+  const handleExport = () => {
+    if (!exportData) return;
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `streak-calendar-export-${format(new Date(), "yyyy-MM-dd")}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      await importData({ data });
+      toast({
+        title: t("importSuccess"),
+        description: t("dataImported"),
+      });
+    } catch {
+      toast({
+        title: t("importError"),
+        description: t("invalidFile"),
+        variant: "destructive",
+      });
+    }
+
+    // Reset the input
+    e.target.value = "";
   };
 
   if (isLoading) {
@@ -114,52 +154,65 @@ export default function CalendarPage() {
               </div>
             ))}
           </div>
-          <Dialog open={showNewCalendarDialog} onOpenChange={setShowNewCalendarDialog}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4" />
-                {t("addCalendar")}
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{t("createCalendar")}</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium">{t("calendarName")}</label>
-                  <Input
-                    value={newCalendarName}
-                    onChange={(e) => setNewCalendarName(e.target.value)}
-                    placeholder={t("calendarNamePlaceholder")}
-                  />
+          <div className="flex gap-2">
+            <Dialog open={showNewCalendarDialog} onOpenChange={setShowNewCalendarDialog}>
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus className="h-4 w-4" />
+                  {t("addCalendar")}
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t("createCalendar")}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium">{t("calendarName")}</label>
+                    <Input
+                      value={newCalendarName}
+                      onChange={(e) => setNewCalendarName(e.target.value)}
+                      placeholder={t("calendarNamePlaceholder")}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">{t("colorTheme")}</label>
+                    <Select value={newCalendarColor} onValueChange={setNewCalendarColor}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {colorThemes.map((color) => (
+                          <SelectItem key={color} value={color}>
+                            {color.charAt(0).toUpperCase() + color.slice(1)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" onClick={() => setShowNewCalendarDialog(false)}>
+                      {t("cancel")}
+                    </Button>
+                    <Button onClick={handleCreateCalendar} disabled={!newCalendarName}>
+                      {t("create")}
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <label className="text-sm font-medium">{t("colorTheme")}</label>
-                  <Select value={newCalendarColor} onValueChange={setNewCalendarColor}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {colorThemes.map((color) => (
-                        <SelectItem key={color} value={color}>
-                          {color.charAt(0).toUpperCase() + color.slice(1)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setShowNewCalendarDialog(false)}>
-                    {t("cancel")}
-                  </Button>
-                  <Button onClick={handleCreateCalendar} disabled={!newCalendarName}>
-                    {t("create")}
-                  </Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+              </DialogContent>
+            </Dialog>
+            <Button onClick={handleExport} variant="outline">
+              <Download className="h-4 w-4 mr-2" />
+              {t("export")}
+            </Button>
+            <Button variant="outline" asChild>
+              <label className="cursor-pointer">
+                <Upload className="h-4 w-4 mr-2" />
+                {t("import")}
+                <input type="file" accept=".json" className="hidden" onChange={handleImport} />
+              </label>
+            </Button>
+          </div>
         </main>
       </div>
     </SignedIn>

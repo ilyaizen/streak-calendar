@@ -45,7 +45,13 @@
     "deleteConfirm": "Delete Confirmation",
     "deleteCalendarConfirmText": "Are you sure you want to delete {calendarName}? All habits and their completion history will be permanently deleted. This action cannot be undone.",
     "hasBeenDeleted": "has been deleted",
-    "hasBeenUpdated": "has been updated"
+    "hasBeenUpdated": "has been updated",
+    "export": "Export",
+    "import": "Import",
+    "importSuccess": "Import successful",
+    "dataImported": "Your data has been imported successfully",
+    "importError": "Import failed",
+    "invalidFile": "Invalid file format. Please select a valid export file."
   },
   "terms": {
     "title": "Terms of Service",

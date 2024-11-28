@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQuery } from "convex/react";
@@ -35,6 +37,7 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
   const [newColorTheme, setNewColorTheme] = useState(calendar.colorTheme);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [monthOffset, setMonthOffset] = useState(0);
+  const [isDefaultSelected, setIsDefaultSelected] = useState(calendar.isDefault);
 
   if (!habits) {
     return (
@@ -50,6 +53,11 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
       name: newName,
       colorTheme: newColorTheme,
     });
+
+    if (isDefaultSelected && !calendar.isDefault) {
+      await setDefaultCalendar({ id: calendar._id });
+    }
+
     setShowEditDialog(false);
     toast({
       title: t("updateSuccess"),
@@ -66,15 +74,6 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
     });
     setShowEditDialog(false);
     setShowDeleteDialog(false);
-  };
-
-  const handleSetDefault = async () => {
-    await setDefaultCalendar({ id: calendar._id });
-    setShowEditDialog(false);
-    toast({
-      title: t("updateSuccess"),
-      description: `${calendar.name} ${t("isNowDefault")}`,
-    });
   };
 
   // Filter completions for this calendar's habits
@@ -136,21 +135,23 @@ export function CalendarView({ completions, calendar }: CalendarViewProps) {
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <RadioGroup
+                  defaultValue={calendar.isDefault ? "default" : ""}
+                  onValueChange={(value) => {
+                    setIsDefaultSelected(value === "default");
+                  }}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="default" id="default" />
+                    <Label htmlFor="default">{t("makeDefault")}</Label>
+                  </div>
+                </RadioGroup>
+              </div>
               <div className="flex justify-between">
-                <div className="space-x-2">
-                  {!calendar.isDefault ? (
-                    <>
-                      <Button variant="destructive" onClick={() => setShowDeleteDialog(true)}>
-                        {t("delete")}
-                      </Button>
-                      <Button variant="outline" onClick={handleSetDefault}>
-                        {t("makeDefault")}
-                      </Button>
-                    </>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">{t("defaultCalendar")}</p>
-                  )}
-                </div>
+                <Button variant="destructive" onClick={() => setShowDeleteDialog(true)} disabled={calendar.isDefault}>
+                  {t("delete")}
+                </Button>
                 <div className="flex gap-2">
                   <Button variant="outline" onClick={() => setShowEditDialog(false)}>
                     {t("cancel")}

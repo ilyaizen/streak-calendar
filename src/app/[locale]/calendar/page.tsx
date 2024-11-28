@@ -22,7 +22,7 @@ import { SignedIn } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import { useConvexAuth } from "convex/react";
 import { endOfMonth, format, startOfMonth, subMonths } from "date-fns";
-import { Download, Loader2, Plus, Upload } from "lucide-react";
+import { ArrowUpDown, Download, Loader2, Plus, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -69,6 +69,7 @@ export default function CalendarPage() {
   const [showExportDialog, setShowExportDialog] = useState(false);
   const [importFile, setImportFile] = useState<File | null>(null);
   const [showImportDialog, setShowImportDialog] = useState(false);
+  const [showImportExportDialog, setShowImportExportDialog] = useState(false);
 
   // Create default calendar if none exists
   useEffect(() => {
@@ -222,17 +223,39 @@ export default function CalendarPage() {
                 </div>
               </DialogContent>
             </Dialog>
-            <Button onClick={() => setShowExportDialog(true)} variant="outline">
-              <Download className="h-4 w-4 mr-2" />
-              {t("export")}
-            </Button>
-            <Button variant="outline" asChild>
-              <label className="cursor-pointer">
-                <Upload className="h-4 w-4 mr-2" />
-                {t("import")}
-                <input type="file" accept=".json" className="hidden" onChange={handleImportSelect} />
-              </label>
-            </Button>
+            <Dialog open={showImportExportDialog} onOpenChange={setShowImportExportDialog}>
+              <DialogTrigger asChild>
+                <Button variant="outline">
+                  <ArrowUpDown className="h-4 w-4" />
+                  {t("importExport")}
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t("importExport")}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-4">
+                    <Button onClick={() => setShowExportDialog(true)}>
+                      <Download className="h-4 w-4" />
+                      {t("export")}
+                    </Button>
+                    <Button asChild>
+                      <label className="cursor-pointer flex items-center justify-center">
+                        <Upload className="h-4 w-4" />
+                        {t("import")}
+                        <input type="file" accept=".json" className="hidden" onChange={handleImportSelect} />
+                      </label>
+                    </Button>
+                  </div>
+                  <div className="flex justify-end">
+                    <Button variant="outline" onClick={() => setShowImportExportDialog(false)}>
+                      {t("cancel")}
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
 
             <AlertDialog open={showExportDialog} onOpenChange={setShowExportDialog}>
               <AlertDialogContent>

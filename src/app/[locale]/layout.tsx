@@ -49,7 +49,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={locale === "he" ? "rtl" : "ltr"} className="h-full" suppressHydrationWarning>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col overflow-x-hidden">
         <Providers locale={locale} messages={messages}>
           <Header />
           <main role="main" className="mx-auto w-full max-w-5xl px-4 py-8 pt-8 sm:px-6 lg:px-8">

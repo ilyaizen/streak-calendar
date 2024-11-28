@@ -285,22 +285,24 @@ export const exportData = query({
         .filter((q) => q.eq(q.field("calendarId"), calendar._id))
         .collect();
 
-      const habitsWithCompletions = await Promise.all(
-        habits.map(async (habit) => {
-          const completions = await ctx.db
-            .query("completions")
-            .filter((q) => q.eq(q.field("habitId"), habit._id))
-            .collect();
+      const habitsWithCompletions = [];
 
-          return {
-            name: habit.name,
-            targetFrequency: habit.targetFrequency,
-            completions: completions.map((c) => ({
-              completedAt: c.completedAt,
-            })),
-          };
-        })
-      );
+      // Process habits one at a time to avoid memory issues
+      for (const habit of habits) {
+        const completions = await ctx.db
+          .query("completions")
+          .filter((q) => q.eq(q.field("habitId"), habit._id))
+          .collect()
+          .then((completions) => completions.slice(0, 1000)); // Take first 1000 completions
+
+        habitsWithCompletions.push({
+          name: habit.name,
+          targetFrequency: habit.targetFrequency,
+          completions: completions.map((c: { completedAt: number }) => ({
+            completedAt: c.completedAt,
+          })),
+        });
+      }
 
       result.push({
         name: calendar.name,

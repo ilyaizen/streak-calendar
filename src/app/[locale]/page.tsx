@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { Calendar, Clock, LineChart, Trophy } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -56,6 +57,34 @@ export default function Home() {
               <Link href="/calendar">{t("goToCalendar")}</Link>
             </Button>
           </SignedIn>
+        </div>
+      </div>
+
+      <div className="w-full max-w-7xl space-y-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {/* Desktop Preview */}
+          <div className="relative aspect-[16/10] overflow-hidden rounded-xl border shadow-lg lg:col-span-2">
+            <Image src="/screen.png" alt="Desktop preview" fill className="object-cover dark:hidden" priority />
+            <Image
+              src="/screen-dark.png"
+              alt="Desktop preview (dark)"
+              fill
+              className="hidden object-cover dark:block"
+              priority
+            />
+          </div>
+
+          {/* Mobile Preview */}
+          <div className="relative aspect-[3/4] overflow-hidden rounded-xl border shadow-lg">
+            <Image src="/screen-mobile.png" alt="Mobile preview" fill className="object-cover dark:hidden" priority />
+            <Image
+              src="/screen-mobile-dark.png"
+              alt="Mobile preview (dark)"
+              fill
+              className="hidden object-cover dark:block"
+              priority
+            />
+          </div>
         </div>
       </div>
     </div>

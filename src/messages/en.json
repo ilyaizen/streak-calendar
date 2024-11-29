@@ -76,7 +76,7 @@
   },
   "about": {
     "title": "About Streak Calendar",
-    "description": "Streak Calendar is a simple yet powerful habit tracking tool based on the \"Don't Break the Chain\" method popularized by Jerry Seinfeld. The concept is simple: mark an X for each day you complete a habit, creating an unbroken chain that motivates you to maintain your streak.",
+    "description": "Streak Calendar is a simple yet powerful habit tracking tool based on the \"Don't Break the Chain\" method popularized by Jerry Seinfeld. The concept is simple: mark your progress for each day you complete a habit, and creating an unbroken chain that motivates you to maintain your streak.",
     "features": {
       "description": "Built with modern web technologies including Next.js, Convex, and Clerk, Streak Calendar helps you visualize your progress and stay motivated through:",
       "list": {

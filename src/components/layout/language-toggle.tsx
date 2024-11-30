@@ -6,9 +6,9 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
 const languages = {
-  en: { name: "English", flagSrc: "/us.png" },
-  ru: { name: "Русский", flagSrc: "/ru.png" },
-  he: { name: "עברית", flagSrc: "/il.png" },
+  en: { name: "English", flagSrc: "/flag-us.png" },
+  ru: { name: "Русский", flagSrc: "/flag-ru.png" },
+  he: { name: "עברית", flagSrc: "/flag-il.png" },
 } as const;
 
 export function LanguageToggle() {

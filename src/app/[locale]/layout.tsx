@@ -5,6 +5,7 @@ import { Locale, locales } from "@/i18n/settings";
 import type { Metadata, Viewport } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 
 import "../globals.css";
 import { Providers } from "./providers";
@@ -56,6 +57,18 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={locale === "he" ? "rtl" : "ltr"} className="h-full" suppressHydrationWarning>
+      <head>
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-M08NN7869T" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-M08NN7869T');
+          `}
+        </Script>
+      </head>
       <body className="flex min-h-full flex-col overflow-x-hidden">
         <Providers locale={locale} messages={messages}>
           <Header />

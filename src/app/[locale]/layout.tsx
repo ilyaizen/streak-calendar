@@ -68,6 +68,11 @@ export default async function LocaleLayout({
             gtag('config', 'G-M08NN7869T');
           `}
         </Script>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6572203520543320"
+          crossOrigin="anonymous"
+        ></Script>
       </head>
       <body className="flex min-h-full flex-col overflow-x-hidden">
         <Providers locale={locale} messages={messages}>

@@ -77,6 +77,13 @@ export default async function LocaleLayout({
       <body className="flex min-h-full flex-col overflow-x-hidden">
         <Providers locale={locale} messages={messages}>
           <Header />
+          <div className="w-full bg-red-600 p-4 text-center">
+            <h1 className="text-3xl font-black text-white">⚠️ IMPORTANT NOTICE ⚠️</h1>
+            <p className="text-xl font-bold text-white">
+              This version will be deprecated soon. Please backup your data using the export/import feature before the
+              upgrade.
+            </p>
+          </div>
           <main role="main" className="mx-auto w-full max-w-5xl px-4 py-8 pt-8 sm:px-6 lg:px-8">
             {children}
           </main>

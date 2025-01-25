@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.11] - 2025-01-25
+
+Commit Summary: `refactor: move timer logic to server-side using Convex scheduled functions`
+
+### Changed
+
+- Migrated timer functionality from client to server-side
+  - Implemented server-side timer using Convex scheduled functions
+  - Added time drift compensation between client and server
+  - Improved timer reliability by removing client-side state dependency
+  - Timer now persists across page reloads and app closes
+
+### Removed
+
+- Removed client-side timer modal component
+- Removed client-side timer state management
+
 ## [2.0.10] - 2025-01-21
 
 Commit Summary: `fix: accurate timestamps for habit completions`

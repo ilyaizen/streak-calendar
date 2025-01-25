@@ -50,7 +50,17 @@ interface DayCellProps {
  * Includes a clickable button that shows completion status and a popover menu for updating counts
  */
 export const DayCell = memo(
-  ({ date, count, onCountChange, colorClass, disabled, label, size = "medium", isUpdating = false }: DayCellProps) => {
+  ({
+    date,
+    count,
+    onCountChange,
+    colorClass,
+    disabled,
+    label,
+    size = "medium",
+    isUpdating = false,
+    habitId,
+  }: DayCellProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const t = useTranslations("calendar");
 
@@ -148,6 +158,7 @@ export const DayCell = memo(
                     onDecrement={() => onCountChange(count - 1)}
                     variant="default"
                     disabled={isUpdating}
+                    habitId={habitId}
                   />
                 </div>
               </div>
@@ -166,7 +177,8 @@ export const DayCell = memo(
       prevProps.disabled === nextProps.disabled &&
       prevProps.label === nextProps.label &&
       prevProps.size === nextProps.size &&
-      prevProps.isUpdating === nextProps.isUpdating
+      prevProps.isUpdating === nextProps.isUpdating &&
+      prevProps.habitId === nextProps.habitId
     );
   }
 );

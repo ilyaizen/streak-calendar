@@ -306,7 +306,8 @@
       "start": "Start",
       "timer": "Timer",
       "new": "New",
-      "addHabit": "Add Habit"
+      "addHabit": "Add Habit",
+      "scheduling": "Starting..."
     },
     "dateFormat": {
       "short": "{month} {day}",

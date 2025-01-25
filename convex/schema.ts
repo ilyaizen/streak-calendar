@@ -25,7 +25,11 @@ export default defineSchema({
     calendarId: v.id("calendars"), // Reference to parent calendar
     timerDuration: v.optional(v.number()), // Optional duration for timed habits (in seconds)
     position: v.optional(v.number()), // Optional display order in the UI
-  }).index("by_calendar", ["calendarId"]), // Index to fetch habits for a calendar
+    scheduledTimer: v.optional(v.id("_scheduled_functions")),
+    timerEnd: v.optional(v.number()),
+  })
+    .index("by_calendar", ["calendarId"])
+    .index("scheduledTimer", ["scheduledTimer"]), // Index to fetch habits for a calendar
 
   // Records each time a habit is completed
   // Tracks the completion history for streak calculations

@@ -113,6 +113,7 @@ export function MonthGridView({
                   count={todayCount}
                   onIncrement={() => handleToggle(habit._id, today, todayCount + 1)}
                   onDecrement={() => handleToggle(habit._id, today, todayCount - 1)}
+                  habitId={habit._id}
                   variant="default"
                   timerDuration={habit.timerDuration}
                   habitName={habit.name}

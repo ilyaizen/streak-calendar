@@ -1,7 +1,8 @@
 import { v } from "convex/values";
 
-import { Doc } from "./_generated/dataModel";
-import { mutation, query } from "./_generated/server";
+import { internal } from "./_generated/api";
+import { Doc, Id } from "./_generated/dataModel";
+import { internalMutation, mutation, query } from "./_generated/server";
 
 /**
  * Habit management operations for tracking user habits within calendars.
@@ -360,5 +361,103 @@ export const get = query({
     const habit = await ctx.db.get(args.id);
     if (!habit) throw new Error("Habit not found");
     return habit;
+  },
+});
+
+export const scheduleHabitIncrement = mutation({
+  args: {
+    habitId: v.id("habits"),
+    durationMs: v.number(),
+    clientNow: v.number(),
+  },
+  handler: async (ctx, args): Promise<Id<"_scheduled_functions">> => {
+    console.log("Starting schedule mutation for habit:", args.habitId);
+
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const habit = await ctx.db.get(args.habitId);
+    if (!habit || habit.userId !== identity.subject) {
+      console.error("Habit not found or unauthorized:", args.habitId);
+      throw new Error("Habit not found or unauthorized");
+    }
+
+    const serverNow = Date.now();
+    const timeDrift = serverNow - args.clientNow;
+    const completionTime = serverNow + args.durationMs - timeDrift;
+    console.log("Scheduling with:", {
+      clientNow: args.clientNow,
+      serverNow,
+      timeDrift,
+      scheduledDelay: args.durationMs - timeDrift,
+      completionTime,
+    });
+
+    if (habit.scheduledTimer) {
+      console.log("Cancelling existing timer:", habit.scheduledTimer);
+      await ctx.scheduler.cancel(habit.scheduledTimer);
+    }
+
+    try {
+      const scheduledId = await ctx.scheduler.runAfter(
+        args.durationMs - timeDrift,
+        internal.habits.incrementHabitCount,
+        {
+          habitId: args.habitId,
+          completionTime,
+        }
+      );
+      console.log("Scheduled successfully with ID:", scheduledId);
+
+      await ctx.db.patch(args.habitId, {
+        scheduledTimer: scheduledId,
+        timerEnd: completionTime,
+      });
+      console.log("Updated habit with scheduled timer");
+
+      return scheduledId;
+    } catch {
+      throw new Error("Failed to schedule timer");
+    }
+  },
+});
+
+export const cancelScheduledIncrement = mutation({
+  args: { habitId: v.id("habits") },
+  handler: async (ctx, { habitId }) => {
+    const habit = await ctx.db.get(habitId);
+    if (!habit || !habit.scheduledTimer) return;
+
+    // Cancel the scheduled job
+    await ctx.scheduler.cancel(habit.scheduledTimer);
+
+    // Update the habit document
+    await ctx.db.patch(habitId, {
+      scheduledTimer: undefined,
+      timerEnd: undefined,
+    });
+  },
+});
+
+export const incrementHabitCount = internalMutation({
+  args: {
+    habitId: v.id("habits"),
+    completionTime: v.number(),
+  },
+  handler: async (ctx, { habitId, completionTime }) => {
+    const habit = await ctx.db.get(habitId);
+    if (!habit) throw new Error("Habit not found");
+
+    // Use the pre-calculated completion time
+    await ctx.db.insert("completions", {
+      habitId,
+      userId: habit.userId,
+      completedAt: completionTime,
+    });
+
+    await ctx.db.patch(habitId, {
+      scheduledTimer: undefined,
+      timerEnd: undefined,
+    });
   },
 });

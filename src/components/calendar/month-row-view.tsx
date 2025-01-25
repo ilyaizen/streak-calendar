@@ -188,6 +188,7 @@ export function MonthRowView({
                     onIncrement={() => handleToggle(habit._id, today, todayCount + 1)}
                     onDecrement={() => handleToggle(habit._id, today, todayCount - 1)}
                     variant="default"
+                    habitId={habit._id}
                     timerDuration={habit.timerDuration}
                     habitName={habit.name}
                     disabled={loadingState?.habitId === habit._id}

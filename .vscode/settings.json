@@ -6,5 +6,9 @@
   },
   "files.associations": {
     "*.css": "tailwindcss"
-  }
+  },
+  "i18n-ally.localesPaths": [
+    "src/i18n",
+    "src/messages"
+  ]
 }

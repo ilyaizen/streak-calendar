@@ -105,18 +105,31 @@ export const markComplete = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
+    // Cap count to prevent resource exhaustion
+    if (args.count !== undefined && (args.count < 0 || args.count > 100)) {
+      throw new Error("Invalid count — must be between 0 and 100");
+    }
+
     // Verify habit belongs to user
     const habit = await ctx.db.get(args.habitId);
     if (!habit || habit.userId !== identity.subject) {
       throw new Error("Habit not found");
     }
 
-    // Get all completions for this habit on this date
+    // Use UTC for consistent date boundaries across all timezones
     const date = new Date(args.completedAt);
-    date.setHours(0, 0, 0, 0);
-    const startOfDay = date.getTime();
-    date.setHours(23, 59, 59, 999);
-    const endOfDay = date.getTime();
+    const startOfDay = Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      0, 0, 0, 0
+    );
+    const endOfDay = Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      23, 59, 59, 999
+    );
 
     const existingCompletions = await ctx.db
       .query("completions")
@@ -134,10 +147,13 @@ export const markComplete = mutation({
       const toRemove = existingCompletions.slice(-numToRemove);
       await Promise.all(toRemove.map((completion) => ctx.db.delete(completion._id)));
     } else if (targetCount > currentCount) {
-      // Check if the completion is for today
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const isToday = date.getTime() === today.getTime();
+      // Check if the completion is for today (UTC)
+      const now = new Date();
+      const todayStart = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+      const completionDayStart = Date.UTC(
+        date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()
+      );
+      const isToday = todayStart === completionDayStart;
 
       // Use current timestamp for today's completions, otherwise use the provided date
       const baseTimestamp = isToday ? Date.now() : args.completedAt;
@@ -348,18 +364,20 @@ export const remove = mutation({
 
 /**
  * Retrieves a single habit by ID.
- * Note: This query doesn't check ownership, as it's typically used after list()
- * which already filters by user.
+ * Verifies the requesting user owns the habit.
  *
  * @param {Id<"habits">} id - Habit ID to retrieve
- * @throws {Error} If habit not found
+ * @throws {Error} If user not authenticated or habit not found/owned by user
  * @returns {Promise<Doc<"habits">>} The requested habit
  */
 export const get = query({
   args: { id: v.id("habits") },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     const habit = await ctx.db.get(args.id);
-    if (!habit) throw new Error("Habit not found");
+    if (!habit || habit.userId !== identity.subject) throw new Error("Habit not found");
     return habit;
   },
 });
@@ -384,12 +402,13 @@ export const scheduleHabitIncrement = mutation({
 
     const serverNow = Date.now();
     const timeDrift = serverNow - args.clientNow;
-    const completionTime = serverNow + args.durationMs - timeDrift;
+    const adjustedDelay = Math.max(0, args.durationMs - timeDrift);
+    const completionTime = serverNow + adjustedDelay;
     console.log("Scheduling with:", {
       clientNow: args.clientNow,
       serverNow,
       timeDrift,
-      scheduledDelay: args.durationMs - timeDrift,
+      adjustedDelay,
       completionTime,
     });
 
@@ -399,12 +418,23 @@ export const scheduleHabitIncrement = mutation({
     }
 
     try {
+      // If adjusted delay is zero (extreme clock skew), complete immediately
+      if (adjustedDelay === 0) {
+        await ctx.db.insert("completions", {
+          habitId: args.habitId,
+          userId: identity.subject,
+          completedAt: completionTime,
+        });
+        return undefined as unknown as Id<"_scheduled_functions">;
+      }
+
       const scheduledId = await ctx.scheduler.runAfter(
-        args.durationMs - timeDrift,
+        adjustedDelay,
         internal.habits.incrementHabitCount,
         {
           habitId: args.habitId,
           completionTime,
+          userId: identity.subject,
         }
       );
       console.log("Scheduled successfully with ID:", scheduledId);
@@ -425,8 +455,11 @@ export const scheduleHabitIncrement = mutation({
 export const cancelScheduledIncrement = mutation({
   args: { habitId: v.id("habits") },
   handler: async (ctx, { habitId }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     const habit = await ctx.db.get(habitId);
-    if (!habit || !habit.scheduledTimer) return;
+    if (!habit || habit.userId !== identity.subject || !habit.scheduledTimer) return;
 
     // Cancel the scheduled job
     await ctx.scheduler.cancel(habit.scheduledTimer);
@@ -443,10 +476,16 @@ export const incrementHabitCount = internalMutation({
   args: {
     habitId: v.id("habits"),
     completionTime: v.number(),
+    userId: v.string(),
   },
-  handler: async (ctx, { habitId, completionTime }) => {
+  handler: async (ctx, { habitId, completionTime, userId }) => {
     const habit = await ctx.db.get(habitId);
     if (!habit) throw new Error("Habit not found");
+
+    // Verify the scheduled job still matches the owning user
+    if (habit.userId !== userId) {
+      throw new Error("User mismatch — timer no longer valid");
+    }
 
     // Use the pre-calculated completion time
     await ctx.db.insert("completions", {

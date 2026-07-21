@@ -96,19 +96,21 @@ export const remove = mutation({
       .filter((q) => q.eq(q.field("calendarId"), args.id))
       .collect();
 
-    for (const habit of habits) {
-      // Delete all completions for this habit first
-      await ctx.db
-        .query("completions")
-        .filter((q) => q.eq(q.field("habitId"), habit._id))
-        .collect()
-        .then((completions) => {
-          return Promise.all(completions.map((completion) => ctx.db.delete(completion._id)));
-        });
+    const habitIds = habits.map((h) => h._id);
 
-      // Then delete the habit itself
-      await ctx.db.delete(habit._id);
+    // Batch-delete all completions for these habits in one query per habit
+    // (Convex mutations are atomic within a single mutation call)
+    for (const habitId of habitIds) {
+      const completions = await ctx.db
+        .query("completions")
+        .filter((q) => q.eq(q.field("habitId"), habitId))
+        .collect();
+
+      await Promise.all(completions.map((c) => ctx.db.delete(c._id)));
     }
+
+    // Delete all habits
+    await Promise.all(habitIds.map((id) => ctx.db.delete(id)));
 
     // Step 3: Update positions of remaining calendars
     const allCalendars = await ctx.db
@@ -202,18 +204,20 @@ export const update = mutation({
 
 /**
  * Retrieves a single calendar by ID.
- * Note: This query doesn't check ownership, as it's typically used after list()
- * which already filters by user.
+ * Verifies the requesting user owns the calendar.
  *
  * @param {Id<"calendars">} id - Calendar ID to retrieve
- * @throws {Error} If calendar not found
+ * @throws {Error} If user not authenticated or calendar not found/owned by user
  * @returns {Promise<Calendar>} The requested calendar
  */
 export const get = query({
   args: { id: v.id("calendars") },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     const calendar = await ctx.db.get(args.id);
-    if (!calendar) throw new Error("Calendar not found");
+    if (!calendar || calendar.userId !== identity.subject) throw new Error("Calendar not found");
     return calendar;
   },
 });

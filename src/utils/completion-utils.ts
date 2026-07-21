@@ -13,7 +13,7 @@ import { Id } from "@server/convex/_generated/dataModel";
  * @param completions - Array of completion records with habit IDs and timestamps
  * @returns Number of times the habit was completed on the specified date
  *
- * Note: Uses local timezone for date boundaries (midnight to midnight)
+ * Note: Uses UTC for date boundaries for consistency across timezones
  */
 export function getCompletionCount(
   date: string,
@@ -28,21 +28,11 @@ export function getCompletionCount(
 ) {
   if (!Array.isArray(completions)) return 0;
 
-  // Set start of day (midnight 00:00:00.000)
-  const dayStart = new Date(date);
-  dayStart.setHours(0, 0, 0, 0);
+  // Use UTC for date boundaries
+  const day = new Date(date);
+  const dayStartTime = Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate(), 0, 0, 0, 0);
+  const dayEndTime = Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate(), 23, 59, 59, 999);
 
-  // Set end of day (23:59:59.999)
-  const dayEnd = new Date(date);
-  dayEnd.setHours(23, 59, 59, 999);
-
-  // Convert to timestamps for comparison
-  const dayStartTime = dayStart.getTime();
-  const dayEndTime = dayEnd.getTime();
-
-  // Filter and count completions that match:
-  // 1. The specified habit ID
-  // 2. Timestamp falls within the day's boundaries
   return completions.filter(
     (completion) =>
       completion.habitId === habitId && completion.completedAt >= dayStartTime && completion.completedAt <= dayEndTime

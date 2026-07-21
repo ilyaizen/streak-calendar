@@ -115,17 +115,12 @@ export const importData = mutation({
           colorTheme: v.string(),
           position: v.optional(v.number()),
           habits: v.array(
-            v.union(
-              v.object({
-                name: v.string(),
-                timerDuration: v.optional(v.number()),
-                position: v.optional(v.number()),
-                completions: v.array(v.object({ completedAt: v.number() })),
-                targetFrequency: v.optional(v.any()),
-              }),
-              // Allow any additional fields in the input
-              v.any()
-            )
+            v.object({
+              name: v.string(),
+              timerDuration: v.optional(v.number()),
+              position: v.optional(v.number()),
+              completions: v.array(v.object({ completedAt: v.number() })),
+            })
           ),
         })
       ),
@@ -134,6 +129,18 @@ export const importData = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
+
+    const { calendars } = args.data;
+
+    // Size limits to prevent resource exhaustion
+    if (calendars.length > 50) throw new Error("Too many calendars (max 50)");
+    const totalHabits = calendars.reduce((sum, c) => sum + c.habits.length, 0);
+    if (totalHabits > 200) throw new Error("Too many habits (max 200)");
+    const totalCompletions = calendars.reduce(
+      (sum, c) => sum + c.habits.reduce((hSum, h) => hSum + h.completions.length, 0),
+      0
+    );
+    if (totalCompletions > 10000) throw new Error("Too many completions (max 10,000)");
 
     // Clean the input data to only use fields we need
     const cleanedCalendars = args.data.calendars.map((calendar) => ({

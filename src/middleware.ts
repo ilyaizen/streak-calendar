@@ -17,7 +17,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
   const { pathname } = req.nextUrl;
 
   // Skip middleware for static files and Next.js internals
-  if (pathname.includes(".") || pathname.startsWith("/_next")) {
+  if (pathname.startsWith("/_next") || /\.(png|jpe?g|svg|ico|webp|woff2?|css|js|map)$/i.test(pathname)) {
     return;
   }
 

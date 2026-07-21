@@ -6,10 +6,6 @@ The project is in its experimental/alpha stage and may experience disruptions du
 
 Licensed under MIT, Streak Calendar is free to use and adapt. Hosting and premium services from Convex and Clerk may incur costs, so an affordable pricing model via Stripe is planned. Users can fork and self-host for full access.
 
-|                          Mobile                           |                         Desktop                          |
-| :-------------------------------------------------------: | :------------------------------------------------------: |
-| ![Mobile Calendar Row View](public/new-screen-mobile.png) | ![Destktop Habit Details](public/new-screen-details.png) |
-
 ## Features
 
 Explore a range of features designed to help you stay motivated and organized:
@@ -100,17 +96,6 @@ streak-calendar/
 ## Contributing
 
 Streak Calendar is open source to encourage transparency and collaboration. Contributions and innovations from users are welcome, helping to continuously improve the tool and make it even more effective for everyone.
-
-
-## Support
-
-If you're enjoying using Streak Calendar, drop a ⭐️ on the repo!
-
-<a href="https://buymeacoffee.com/ilyaizen" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=ilyaizen/streak-calendar&type=Date)](https://star-history.com/#ilyaizen/streak-calendar&Date)
 
 ## Links
 
